@@ -58,7 +58,7 @@ export default function GenesisHero() {
                         {...fadeUp(0.3)}
                         className="max-w-xl text-lg text-white/60 leading-relaxed font-sans"
                     >
-                        A única plataforma que une gestão preditiva de validades, diminuiu o desperdício gerando ativos elegíveis a créditos de carbono e conecta suas perdas evitadas a quem mais precisa através do nosso Radar de ONGs.
+                        A única plataforma que une gestão preditiva de validades, diminuiu o desperdício gerando ativos e tokens que valem dinheiro, e conecta suas perdas evitadas a quem mais precisa através do nosso Radar de ONGs.
                     </motion.p>
 
                     <motion.div {...fadeUp(0.4)} className="flex items-center gap-6 mt-4">
