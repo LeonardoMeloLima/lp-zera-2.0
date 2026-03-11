@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const faqData = [
     {
-        category: "⚙️ Como funciona",
+        category: "Como funciona",
         icon: <Settings className="text-[hsl(var(--zera-emerald))]" size={20} />,
         items: [
             {
@@ -22,7 +22,7 @@ const faqData = [
         ]
     },
     {
-        category: "💰 Financeiro e ROI",
+        category: "Financeiro e ROI",
         icon: <DollarSign className="text-[hsl(var(--zera-emerald))]" size={20} />,
         items: [
             {
@@ -40,7 +40,7 @@ const faqData = [
         ]
     },
     {
-        category: "🌿 MRV, Tokens e Valor Financeiro",
+        category: "MRV, Tokens e Valor Financeiro",
         icon: <Leaf className="text-[hsl(var(--zera-emerald))]" size={20} />,
         items: [
             {
@@ -118,8 +118,8 @@ export default function FAQ() {
                                             key={id}
                                             {...fadeUp(0.1 + itemIdx * 0.05)}
                                             className={`group relative rounded-2xl border transition-all duration-300 ${isOpen
-                                                    ? "bg-white/[0.04] border-[hsl(var(--zera-emerald))]/30 shadow-[0_0_30px_-10px_rgba(16,185,129,0.1)]"
-                                                    : "bg-white/[0.02] border-white/5 hover:border-white/10 hover:bg-white/[0.03]"
+                                                ? "bg-white/[0.04] border-[hsl(var(--zera-emerald))]/30 shadow-[0_0_30px_-10px_rgba(16,185,129,0.1)]"
+                                                : "bg-white/[0.02] border-white/5 hover:border-white/10 hover:bg-white/[0.03]"
                                                 }`}
                                         >
                                             <button
