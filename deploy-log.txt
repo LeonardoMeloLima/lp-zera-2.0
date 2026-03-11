@@ -1,3 +1,4 @@
 Last manual sync: 2026-03-10 21:30
 Supabase project: asfrbhtvnopwnwjcyjii
 Status: Webhooks and Edge Functions deployed.
+deploy: trigger vercel rebuild for FAQ section at Tue Mar 10 22:28:05 -03 2026
