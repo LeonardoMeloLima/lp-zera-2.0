@@ -6,6 +6,7 @@ import ESGPillars from "@/components/landing/ESGPillars";
 import Features from "@/components/landing/Features";
 import TwoWorlds from "@/components/landing/TwoWorlds";
 import LeadCapture from "@/components/landing/LeadCapture";
+import FAQ from "@/components/landing/FAQ";
 import Footer from "@/components/landing/Footer";
 import ONGModal from "@/components/landing/ONGModal";
 import InvestorModal from "@/components/landing/InvestorModal";
@@ -29,6 +30,7 @@ function IndexContent() {
         <ESGPillars />
         <Features />
         <TwoWorlds />
+        <FAQ />
         <LeadCapture />
       </main>
       <Footer />
