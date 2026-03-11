@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Settings, DollarSign, Leaf, Plus, Minus } from "lucide-react";
 import { useState } from "react";
+import ConversionJourneyVertical from "./ConversionJourneyVertical";
 
 const faqData = [
     {
@@ -49,7 +50,17 @@ const faqData = [
             },
             {
                 q: "8. Como um simples dado de estoque se transforma em um Token que vale dinheiro na prática?",
-                a: "Quando um sistema tradicional relata que você evitou perdas, isso é apenas uma planilha interna sem valor de mercado. O nosso MRV entra para auditar esse processo de forma independente e automática. Ao atestar que o alimento foi salvo, nós tokenizamos esse evento. Isso significa envelopar a sua eficiência em um certificado digital único (o Token). Bancos, fundos e grandes corporações injetam dinheiro ou dão benefícios financeiros em troca desses Tokens porque precisam adquirir ativos validados de impacto ambiental e social."
+                a: (
+                    <div className="space-y-4">
+                        <p>
+                            Quando um sistema tradicional relata que você evitou perdas, isso é apenas uma planilha interna sem valor de mercado. O nosso MRV entra para auditar esse processo de forma independente e automática. Ao atestar que o alimento foi salvo, nós tokenizamos esse evento. Isso significa envelopar a sua eficiência em um certificado digital único (o Token).
+                        </p>
+                        <p>
+                            Bancos, fundos e grandes corporações injetam dinheiro ou dão benefícios financeiros em troca desses Tokens porque precisam adquirir ativos validados de impacto ambiental e social.
+                        </p>
+                        <ConversionJourneyVertical />
+                    </div>
+                )
             },
             {
                 q: "9. Quem garante que os ativos digitais gerados pelo desperdício evitado têm valor financeiro real no mercado?",
@@ -109,8 +120,8 @@ export default function FAQ() {
                                 key={catIdx}
                                 {...fadeUp(catIdx * 0.1)}
                                 className={`group relative rounded-[32px] border transition-all duration-500 overflow-hidden ${isCatOpen
-                                        ? "bg-white/[0.04] border-[hsl(var(--zera-emerald))]/30 shadow-[0_0_50px_-10px_rgba(16,185,129,0.1)]"
-                                        : "bg-white/[0.02] border-white/5 hover:border-white/10 hover:bg-white/[0.03]"
+                                    ? "bg-white/[0.04] border-[hsl(var(--zera-emerald))]/30 shadow-[0_0_50px_-10px_rgba(16,185,129,0.1)]"
+                                    : "bg-white/[0.02] border-white/5 hover:border-white/10 hover:bg-white/[0.03]"
                                     }`}
                             >
                                 {/* Category Header */}
@@ -120,8 +131,8 @@ export default function FAQ() {
                                 >
                                     <div className="flex items-center gap-4">
                                         <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border transition-all duration-500 ${isCatOpen
-                                                ? "bg-[hsl(var(--zera-emerald))]/20 border-[hsl(var(--zera-emerald))]/40 scale-110"
-                                                : "bg-white/5 border-white/10"
+                                            ? "bg-[hsl(var(--zera-emerald))]/20 border-[hsl(var(--zera-emerald))]/40 scale-110"
+                                            : "bg-white/5 border-white/10"
                                             }`}>
                                             {category.icon}
                                         </div>
@@ -159,8 +170,8 @@ export default function FAQ() {
                                                         <div
                                                             key={qId}
                                                             className={`rounded-2xl border transition-all duration-300 ${isQOpen
-                                                                    ? "bg-white/[0.05] border-white/10"
-                                                                    : "bg-white/[0.01] border-white/[0.03] hover:border-white/10"
+                                                                ? "bg-white/[0.05] border-white/10"
+                                                                : "bg-white/[0.01] border-white/[0.03] hover:border-white/10"
                                                                 }`}
                                                         >
                                                             <button
