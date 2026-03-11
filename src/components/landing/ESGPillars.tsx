@@ -94,7 +94,7 @@ export default function ESGPillars() {
 
               <h3 className="text-2xl font-bold text-white mb-4 tracking-tight flex items-center gap-2">
                 {pillar.title}
-                <span className="text-[10px] font-mono text-[hsl(var(--zera-emerald))] font-black">{pillar.highlight}</span>
+                <span className="text-lg font-mono text-[hsl(var(--zera-emerald))] font-black">{pillar.highlight}</span>
               </h3>
 
               <p className="text-sm leading-relaxed text-white/50 mb-8 font-sans">
