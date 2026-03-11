@@ -77,13 +77,8 @@ export default function GenesisHero() {
 
                     <motion.div {...fadeUp(0.5)} className="flex items-center gap-8 mt-6">
                         <div className="flex flex-col gap-1">
-                            <span className="text-2xl font-bold text-white leading-none">94%</span>
+                            <span className="text-2xl font-bold text-white leading-none">15%</span>
                             <span className="text-[10px] text-white/30 uppercase tracking-widest font-mono">Redução Média de Perdas</span>
-                        </div>
-                        <div className="w-[1px] h-10 bg-white/10" />
-                        <div className="flex flex-col gap-1">
-                            <span className="text-2xl font-bold text-white leading-none">+250</span>
-                            <span className="text-[10px] text-white/30 uppercase tracking-widest font-mono">ONGs Cadastradas</span>
                         </div>
                     </motion.div>
                 </div>
