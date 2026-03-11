@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Settings, DollarSign, Leaf } from "lucide-react";
+import { ChevronDown, Settings, DollarSign, Leaf, Plus, Minus } from "lucide-react";
 import { useState } from "react";
 
 const faqData = [
@@ -75,10 +75,17 @@ const fadeUp = (delay = 0) => ({
 });
 
 export default function FAQ() {
-    const [openIndex, setOpenIndex] = useState<string | null>(null);
+    const [openCategory, setOpenCategory] = useState<number | null>(null);
+    const [openQuestion, setOpenQuestion] = useState<string | null>(null);
 
-    const toggle = (id: string) => {
-        setOpenIndex(openIndex === id ? null : id);
+    const toggleCategory = (idx: number) => {
+        setOpenCategory(openCategory === idx ? null : idx);
+        setOpenQuestion(null); // Close inner questions when category changes
+    };
+
+    const toggleQuestion = (id: string, e: React.MouseEvent) => {
+        e.stopPropagation();
+        setOpenQuestion(openQuestion === id ? null : id);
     };
 
     return (
@@ -89,74 +96,111 @@ export default function FAQ() {
                         Dúvidas <span className="text-gradient-emerald italic">Frequentes</span>
                     </h2>
                     <p className="text-white/40 font-sans max-w-xl mx-auto text-sm">
-                        Tudo o que você precisa saber sobre como a Zera transforma sua operação e gera ativos reais.
+                        Clique em uma categoria para explorar as soluções e garantias que a Zera oferece.
                     </p>
                 </motion.div>
 
-                <div className="space-y-12">
-                    {faqData.map((category, catIdx) => (
-                        <div key={catIdx} className="space-y-4">
+                <div className="space-y-6">
+                    {faqData.map((category, catIdx) => {
+                        const isCatOpen = openCategory === catIdx;
+
+                        return (
                             <motion.div
+                                key={catIdx}
                                 {...fadeUp(catIdx * 0.1)}
-                                className="flex items-center gap-3 px-2 mb-6"
+                                className={`group relative rounded-[32px] border transition-all duration-500 overflow-hidden ${isCatOpen
+                                        ? "bg-white/[0.04] border-[hsl(var(--zera-emerald))]/30 shadow-[0_0_50px_-10px_rgba(16,185,129,0.1)]"
+                                        : "bg-white/[0.02] border-white/5 hover:border-white/10 hover:bg-white/[0.03]"
+                                    }`}
                             >
-                                <div className="w-10 h-10 rounded-xl bg-[hsl(var(--zera-emerald))]/10 flex items-center justify-center border border-[hsl(var(--zera-emerald))]/20">
-                                    {category.icon}
-                                </div>
-                                <h3 className="text-lg font-bold text-white tracking-tight">
-                                    {category.category}
-                                </h3>
-                            </motion.div>
+                                {/* Category Header */}
+                                <button
+                                    onClick={() => toggleCategory(catIdx)}
+                                    className="w-full text-left p-6 md:p-8 flex items-center justify-between gap-4"
+                                >
+                                    <div className="flex items-center gap-4">
+                                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border transition-all duration-500 ${isCatOpen
+                                                ? "bg-[hsl(var(--zera-emerald))]/20 border-[hsl(var(--zera-emerald))]/40 scale-110"
+                                                : "bg-white/5 border-white/10"
+                                            }`}>
+                                            {category.icon}
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <h3 className={`text-xl font-bold tracking-tight transition-colors duration-500 ${isCatOpen ? "text-white" : "text-white/70 group-hover:text-white"
+                                                }`}>
+                                                {category.category}
+                                            </h3>
+                                            <span className="text-[10px] font-mono text-white/20 uppercase tracking-widest mt-1">
+                                                {category.items.length} perguntas relacionadas
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className={`w-8 h-8 rounded-full border border-white/10 flex items-center justify-center transition-all duration-500 ${isCatOpen ? "bg-[hsl(var(--zera-emerald))] border-[hsl(var(--zera-emerald))] rotate-180" : "bg-white/5"
+                                        }`}>
+                                        <ChevronDown size={18} className={isCatOpen ? "text-white" : "text-white/30"} />
+                                    </div>
+                                </button>
 
-                            <div className="grid gap-3">
-                                {category.items.map((item, itemIdx) => {
-                                    const id = `${catIdx}-${itemIdx}`;
-                                    const isOpen = openIndex === id;
-
-                                    return (
+                                {/* Questions List (Nested Accordion) */}
+                                <AnimatePresence>
+                                    {isCatOpen && (
                                         <motion.div
-                                            key={id}
-                                            {...fadeUp(0.1 + itemIdx * 0.05)}
-                                            className={`group relative rounded-2xl border transition-all duration-300 ${isOpen
-                                                ? "bg-white/[0.04] border-[hsl(var(--zera-emerald))]/30 shadow-[0_0_30px_-10px_rgba(16,185,129,0.1)]"
-                                                : "bg-white/[0.02] border-white/5 hover:border-white/10 hover:bg-white/[0.03]"
-                                                }`}
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{ height: "auto", opacity: 1 }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                                         >
-                                            <button
-                                                onClick={() => toggle(id)}
-                                                className="w-full text-left p-5 md:p-6 flex items-start justify-between gap-4"
-                                            >
-                                                <span className={`font-semibold md:text-lg transition-colors duration-300 ${isOpen ? "text-white" : "text-white/70 group-hover:text-white"
-                                                    }`}>
-                                                    {item.q}
-                                                </span>
-                                                <div className={`mt-1 flex-shrink-0 w-6 h-6 rounded-full border border-white/10 flex items-center justify-center transition-all duration-300 ${isOpen ? "bg-[hsl(var(--zera-emerald))] border-[hsl(var(--zera-emerald))] rotate-180" : "bg-white/5"
-                                                    }`}>
-                                                    <ChevronDown size={14} className={isOpen ? "text-white" : "text-white/30"} />
-                                                </div>
-                                            </button>
+                                            <div className="px-6 pb-8 md:px-8 md:pb-10 pt-2 space-y-3">
+                                                {category.items.map((item, itemIdx) => {
+                                                    const qId = `${catIdx}-${itemIdx}`;
+                                                    const isQOpen = openQuestion === qId;
 
-                                            <AnimatePresence>
-                                                {isOpen && (
-                                                    <motion.div
-                                                        initial={{ height: 0, opacity: 0 }}
-                                                        animate={{ height: "auto", opacity: 1 }}
-                                                        exit={{ height: 0, opacity: 0 }}
-                                                        transition={{ duration: 0.3, ease: "easeInOut" }}
-                                                        className="overflow-hidden"
-                                                    >
-                                                        <div className="px-5 pb-6 md:px-6 md:pb-8 text-white/50 leading-relaxed font-sans text-sm md:text-base border-t border-white/5 pt-4">
-                                                            {item.a}
+                                                    return (
+                                                        <div
+                                                            key={qId}
+                                                            className={`rounded-2xl border transition-all duration-300 ${isQOpen
+                                                                    ? "bg-white/[0.05] border-white/10"
+                                                                    : "bg-white/[0.01] border-white/[0.03] hover:border-white/10"
+                                                                }`}
+                                                        >
+                                                            <button
+                                                                onClick={(e) => toggleQuestion(qId, e)}
+                                                                className="w-full text-left p-5 flex items-start justify-between gap-4"
+                                                            >
+                                                                <span className={`font-semibold text-sm md:text-base transition-colors duration-300 ${isQOpen ? "text-white" : "text-white/50 hover:text-white/80"
+                                                                    }`}>
+                                                                    {item.q}
+                                                                </span>
+                                                                <div className="mt-1 flex-shrink-0 text-white/30">
+                                                                    {isQOpen ? <Minus size={16} /> : <Plus size={16} />}
+                                                                </div>
+                                                            </button>
+
+                                                            <AnimatePresence>
+                                                                {isQOpen && (
+                                                                    <motion.div
+                                                                        initial={{ height: 0, opacity: 0 }}
+                                                                        animate={{ height: "auto", opacity: 1 }}
+                                                                        exit={{ height: 0, opacity: 0 }}
+                                                                        transition={{ duration: 0.3 }}
+                                                                        className="overflow-hidden"
+                                                                    >
+                                                                        <div className="px-5 pb-6 text-white/40 leading-relaxed font-sans text-sm md:text-base border-t border-white/[0.03] pt-4">
+                                                                            {item.a}
+                                                                        </div>
+                                                                    </motion.div>
+                                                                )}
+                                                            </AnimatePresence>
                                                         </div>
-                                                    </motion.div>
-                                                )}
-                                            </AnimatePresence>
+                                                    );
+                                                })}
+                                            </div>
                                         </motion.div>
-                                    );
-                                })}
-                            </div>
-                        </div>
-                    ))}
+                                    )}
+                                </AnimatePresence>
+                            </motion.div>
+                        );
+                    })}
                 </div>
             </div>
 
