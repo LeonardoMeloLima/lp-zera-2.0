@@ -1,12 +1,12 @@
 import { motion } from "framer-motion";
-import { Zap, Droplets, Leaf, Cloud, ArrowRight, TrendingDown, Target } from "lucide-react";
-import soilBg from "../../assets/genesis_soil_texture_bg.png";
+import { Zap, ShoppingCart, Percent, TriangleAlert, ChartColumn, Target } from "lucide-react";
+import soilBg from "../../assets/mercado-interior-bg.jpg";
 
 const stats = [
   {
     value: "3",
     label: "comparativos diários",
-    icon: TrendingDown,
+    icon: ChartColumn,
   },
   {
     value: "6h",
@@ -17,21 +17,21 @@ const stats = [
 
 const cards = [
   {
-    icon: Droplets,
+    icon: ShoppingCart,
     title: "Vendas de sábado",
     value: "R$ 18.420",
     progress: 75,
     subtitle: "+11% contra o mesmo sábado de 2025",
   },
   {
-    icon: Leaf,
+    icon: Percent,
     title: "Margem bruta",
     value: "27,4%",
     progress: 45,
     subtitle: "Hortifrúti puxou a margem para baixo",
   },
   {
-    icon: Cloud,
+    icon: TriangleAlert,
     title: "Caixa",
     value: "2 alertas",
     progress: 90,
