@@ -1,1 +1,4 @@
 project_id = "tirrqshgbpoxxvzcofvf"
+
+[functions.capture-lead-loja]
+verify_jwt = false
