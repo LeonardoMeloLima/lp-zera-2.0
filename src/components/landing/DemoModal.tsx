@@ -3,30 +3,37 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Loader2, Calendar, Layout, BarChart, Settings } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { useCalendly } from "@/hooks/use-calendly";
 
 interface DemoModalProps {
   open: boolean;
   onClose: () => void;
 }
 
-const volumeOptions = [
-  "1 a 5 lojas",
-  "6 a 20 lojas",
-  "21 a 50 lojas",
-  "Mais de 50 lojas",
-];
+const sistemaCaixaOptions = ["VR System", "Hiper", "Outro", "Não sei"];
+
+const ERRO_GENERICO = "Não deu para enviar. Tente de novo.";
+
+const formVazio = {
+  nome: "",
+  whatsapp: "",
+  cidade: "",
+  nome_comercio: "",
+  sistema_caixa: "",
+  mensagem: "",
+};
+
+// Erro 400 da função traz a mensagem em português em { error }.
+async function mensagemDoServidor(error: unknown): Promise<string> {
+  const contexto = (error as { context?: unknown })?.context;
+  if (contexto instanceof Response && contexto.status === 400) {
+    const corpo = await contexto.json().catch(() => null);
+    if (typeof corpo?.error === "string") return corpo.error;
+  }
+  return ERRO_GENERICO;
+}
 
 export default function DemoModal({ open, onClose }: DemoModalProps) {
-  const openCalendly = useCalendly();
-  const [form, setForm] = useState({
-    nome_completo: "",
-    email_corporativo: "",
-    cargo: "",
-    nome_empresa: "",
-    volume_lojas: "",
-    mensagem: "",
-  });
+  const [form, setForm] = useState(formVazio);
   const [loading, setLoading] = useState(false);
 
   const handleChange = (
@@ -39,34 +46,26 @@ export default function DemoModal({ open, onClose }: DemoModalProps) {
     e.preventDefault();
     setLoading(true);
     try {
-      const { error } = await supabase.from("b2b_leads" as any).insert({
-        nome_completo: form.nome_completo.trim(),
-        email_corporativo: form.email_corporativo.trim(),
-        cargo: form.cargo.trim(),
-        nome_empresa: form.nome_empresa.trim(),
-        volume_lojas: form.volume_lojas,
-        mensagem: form.mensagem.trim() || null,
-      });
-      if (error) throw error;
+      const { error } = await supabase.functions.invoke("capture-lead-loja", { body: form });
+      if (error) {
+        setLoading(false);
+        toast.error(await mensagemDoServidor(error));
+        return;
+      }
       setLoading(false);
       handleClose();
-      toast.success("Protocolo validado. Abrindo agenda de briefing...");
-      try {
-        await openCalendly();
-      } catch {
-        window.open("https://calendly.com/zeraapp", "_blank");
-      }
+      toast.success("Recebido! Vamos te chamar no WhatsApp.");
     } catch (err) {
-      console.error("Insert error:", err);
+      console.error("Erro ao enviar lead:", err);
       setLoading(false);
-      toast.error("Erro no protocolo. Tente novamente.");
+      toast.error(ERRO_GENERICO);
     }
   };
 
   const handleClose = () => {
     onClose();
     setTimeout(() => {
-      setForm({ nome_completo: "", email_corporativo: "", cargo: "", nome_empresa: "", volume_lojas: "", mensagem: "" });
+      setForm(formVazio);
     }, 300);
   };
 
@@ -107,7 +106,7 @@ export default function DemoModal({ open, onClose }: DemoModalProps) {
                   </span>
                 </div>
                 <h3 className="text-2xl font-bold tracking-tight text-white mb-3">
-                  Agende sua <span className="text-gradient-genesis italic">Demonstração</span>
+                  Quero testar o <span className="text-gradient-genesis italic">Zera</span>
                 </h3>
                 <p className="text-sm font-sans text-white/40 leading-relaxed">
                   Analise como o ecossistema Zera integra-se à sua arquitetura logística para neutralizar desperdício e maximizar margem.
@@ -120,11 +119,11 @@ export default function DemoModal({ open, onClose }: DemoModalProps) {
                     <label className="text-[10px] font-mono font-bold tracking-widest text-white/30 uppercase ml-1 block mb-2">
                       Informações Profissionais
                     </label>
-                    <input name="nome_completo" value={form.nome_completo} onChange={handleChange} placeholder="Nome Completo" required className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 text-sm font-medium text-white focus:outline-none focus:border-emerald-500/50 transition-all placeholder:text-white/20" />
-                    <input name="email_corporativo" type="email" value={form.email_corporativo} onChange={handleChange} placeholder="E-mail Corporativo" required className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 text-sm font-medium text-white focus:outline-none focus:border-emerald-500/50 transition-all placeholder:text-white/20" />
+                    <input name="nome" value={form.nome} onChange={handleChange} placeholder="Seu nome" required className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 text-sm font-medium text-white focus:outline-none focus:border-emerald-500/50 transition-all placeholder:text-white/20" />
+                    <input name="whatsapp" type="tel" inputMode="tel" value={form.whatsapp} onChange={handleChange} placeholder="WhatsApp (com DDD)" required className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 text-sm font-medium text-white focus:outline-none focus:border-emerald-500/50 transition-all placeholder:text-white/20" />
                     <div className="grid sm:grid-cols-2 gap-4">
-                      <input name="cargo" value={form.cargo} onChange={handleChange} placeholder="Cargo" required className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 text-sm font-medium text-white focus:outline-none focus:border-emerald-500/50 transition-all placeholder:text-white/20" />
-                      <input name="nome_empresa" value={form.nome_empresa} onChange={handleChange} placeholder="Empresa" required className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 text-sm font-medium text-white focus:outline-none focus:border-emerald-500/50 transition-all placeholder:text-white/20" />
+                      <input name="cidade" value={form.cidade} onChange={handleChange} placeholder="Cidade" required className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 text-sm font-medium text-white focus:outline-none focus:border-emerald-500/50 transition-all placeholder:text-white/20" />
+                      <input name="nome_comercio" value={form.nome_comercio} onChange={handleChange} placeholder="Nome do comércio" required className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 text-sm font-medium text-white focus:outline-none focus:border-emerald-500/50 transition-all placeholder:text-white/20" />
                     </div>
                   </div>
 
@@ -133,9 +132,9 @@ export default function DemoModal({ open, onClose }: DemoModalProps) {
                       Escopo da Operação
                     </label>
                     <div className="relative">
-                      <select name="volume_lojas" value={form.volume_lojas} onChange={handleChange} required className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 text-sm font-medium text-white focus:outline-none focus:border-emerald-500/50 appearance-none cursor-pointer pr-12">
-                        <option value="" disabled className="bg-black text-white/20">Volume de Lojas</option>
-                        {volumeOptions.map((v) => (
+                      <select name="sistema_caixa" value={form.sistema_caixa} onChange={handleChange} required className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 text-sm font-medium text-white focus:outline-none focus:border-emerald-500/50 appearance-none cursor-pointer pr-12">
+                        <option value="" disabled className="bg-black text-white/20">Sistema de caixa</option>
+                        {sistemaCaixaOptions.map((v) => (
                           <option key={v} value={v} className="bg-[#0A0A0A] text-white">{v}</option>
                         ))}
                       </select>
@@ -147,15 +146,15 @@ export default function DemoModal({ open, onClose }: DemoModalProps) {
                     </div>
                   </div>
 
-                  <textarea name="mensagem" value={form.mensagem} onChange={handleChange} placeholder="Descreva seus principais desafios logísticos (Opcional)" rows={3} className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 text-sm font-medium text-white focus:outline-none focus:border-emerald-500/50 transition-all placeholder:text-white/20 resize-none" />
+                  <textarea name="mensagem" value={form.mensagem} onChange={handleChange} placeholder="O que mais te incomoda na gestão da loja? (Opcional)" rows={3} className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 text-sm font-medium text-white focus:outline-none focus:border-emerald-500/50 transition-all placeholder:text-white/20 resize-none" />
                 </div>
 
                 <button type="submit" className="btn-zera-emerald w-full mt-4 flex items-center justify-center gap-3 group" disabled={loading}>
                   {loading ? (
-                    <><Loader2 size={18} className="animate-spin" /> Sincronizando...</>
+                    <><Loader2 size={18} className="animate-spin" /> Enviando...</>
                   ) : (
                     <>
-                      Confirmar Agendamento
+                      Enviar
                       <Calendar size={18} className="group-hover:scale-110 transition-transform" />
                     </>
                   )}
