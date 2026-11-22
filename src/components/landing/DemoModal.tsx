@@ -102,14 +102,14 @@ export default function DemoModal({ open, onClose }: DemoModalProps) {
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 mb-4">
                   <Layout size={12} className="text-emerald-500" />
                   <span className="text-[10px] font-mono font-bold tracking-widest text-emerald-500 uppercase">
-                    Technical Briefing
+                    Fale com a gente
                   </span>
                 </div>
                 <h3 className="text-2xl font-bold tracking-tight text-white mb-3">
                   Quero testar o <span className="text-gradient-genesis italic">Zera</span>
                 </h3>
                 <p className="text-sm font-sans text-white/40 leading-relaxed">
-                  Analise como o ecossistema Zera integra-se à sua arquitetura logística para neutralizar desperdício e maximizar margem.
+                  Conte um pouco da sua loja. A gente responde pelo WhatsApp.
                 </p>
               </div>
 
@@ -117,7 +117,7 @@ export default function DemoModal({ open, onClose }: DemoModalProps) {
                 <div className="grid gap-6">
                   <div className="space-y-4">
                     <label className="text-[10px] font-mono font-bold tracking-widest text-white/30 uppercase ml-1 block mb-2">
-                      Informações Profissionais
+                      Sobre você
                     </label>
                     <input name="nome" value={form.nome} onChange={handleChange} placeholder="Seu nome" required className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 text-sm font-medium text-white focus:outline-none focus:border-emerald-500/50 transition-all placeholder:text-white/20" />
                     <input name="whatsapp" type="tel" inputMode="tel" value={form.whatsapp} onChange={handleChange} placeholder="WhatsApp (com DDD)" required className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 text-sm font-medium text-white focus:outline-none focus:border-emerald-500/50 transition-all placeholder:text-white/20" />
@@ -129,7 +129,7 @@ export default function DemoModal({ open, onClose }: DemoModalProps) {
 
                   <div className="space-y-4">
                     <label className="text-[10px] font-mono font-bold tracking-widest text-white/30 uppercase ml-1 block">
-                      Escopo da Operação
+                      Sobre a loja
                     </label>
                     <div className="relative">
                       <select name="sistema_caixa" value={form.sistema_caixa} onChange={handleChange} required className="w-full bg-white/5 border border-white/10 rounded-xl py-4 px-5 text-sm font-medium text-white focus:outline-none focus:border-emerald-500/50 appearance-none cursor-pointer pr-12">
@@ -167,7 +167,7 @@ export default function DemoModal({ open, onClose }: DemoModalProps) {
                   </div>
                   <div className="flex items-center gap-2">
                     <Settings size={12} className="text-white/20" />
-                    <span className="text-[9px] font-mono text-white/20 uppercase tracking-[0.2em]">Zero-Waste Protocol v4.2.0</span>
+                    <span className="text-[9px] font-mono text-white/20 uppercase tracking-[0.2em]">Sem compromisso.</span>
                   </div>
                 </div>
               </form>
