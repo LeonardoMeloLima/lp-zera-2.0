@@ -1,4 +1,8 @@
-project_id = "asfrbhtvnopwnwjcyjii"
+project_id = "tirrqshgbpoxxvzcofvf"
 
-[functions.public-lead-capture]
+[functions.capture-lead-loja]
+verify_jwt = false
+
+# A função valida o JWT do usuário e confere ADMIN_EMAILS por conta própria.
+[functions.admin-leads]
 verify_jwt = false

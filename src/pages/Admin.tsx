@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import type { Session } from "@supabase/supabase-js";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -6,8 +7,9 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RefreshCw, Loader2, LogOut, Lock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-const ADMIN_AUTH_KEY = "admin_auth";
-const VALID_PIN = "ZERA2025";
+import type { Database } from "@/integrations/supabase/types";
+
+type LeadLoja = Database["public"]["Tables"]["leads_loja"]["Row"];
 
 function formatDate(dateStr: string) {
   const d = new Date(dateStr);
@@ -17,18 +19,24 @@ function formatDate(dateStr: string) {
   });
 }
 
-function LoginScreen({ onAuth }: { onAuth: () => void }) {
-  const [pin, setPin] = useState("");
-  const [error, setError] = useState(false);
+function statusDoErro(error: unknown): number | null {
+  const contexto = (error as { context?: unknown })?.context;
+  return contexto instanceof Response ? contexto.status : null;
+}
 
-  const handleSubmit = (e: React.FormEvent) => {
+function LoginScreen() {
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [erro, setErro] = useState<string | null>(null);
+  const [entrando, setEntrando] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (pin === VALID_PIN) {
-      localStorage.setItem(ADMIN_AUTH_KEY, "true");
-      onAuth();
-    } else {
-      setError(true);
-    }
+    setEntrando(true);
+    setErro(null);
+    const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password: senha });
+    setEntrando(false);
+    if (error) setErro("E-mail ou senha incorretos.");
   };
 
   return (
@@ -38,23 +46,38 @@ function LoginScreen({ onAuth }: { onAuth: () => void }) {
           <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-2">
             <Lock className="w-6 h-6 text-primary" />
           </div>
-          <CardTitle className="text-xl">Acesso Restrito — Zera Admin</CardTitle>
+          <CardTitle className="text-xl">Acesso restrito: Zera Admin</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <label htmlFor="pin" className="text-sm font-medium text-muted-foreground">PIN de Acesso</label>
+              <label htmlFor="email" className="text-sm font-medium text-muted-foreground">E-mail</label>
               <Input
-                id="pin"
-                type="password"
-                value={pin}
-                onChange={(e) => { setPin(e.target.value); setError(false); }}
-                placeholder="Digite o PIN"
+                id="email"
+                type="email"
+                autoComplete="username"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); setErro(null); }}
+                required
                 autoFocus
               />
-              {error && <p className="text-sm text-destructive">PIN incorreto. Acesso negado.</p>}
             </div>
-            <Button type="submit" className="w-full bg-[#22c55e] hover:bg-[#16a34a] text-white">Entrar</Button>
+            <div className="space-y-2">
+              <label htmlFor="senha" className="text-sm font-medium text-muted-foreground">Senha</label>
+              <Input
+                id="senha"
+                type="password"
+                autoComplete="current-password"
+                value={senha}
+                onChange={(e) => { setSenha(e.target.value); setErro(null); }}
+                required
+              />
+              {erro && <p className="text-sm text-destructive">{erro}</p>}
+            </div>
+            <Button type="submit" disabled={entrando} className="w-full bg-[#22c55e] hover:bg-[#16a34a] text-white">
+              {entrando && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
+              Entrar
+            </Button>
           </form>
         </CardContent>
       </Card>
@@ -63,61 +86,88 @@ function LoginScreen({ onAuth }: { onAuth: () => void }) {
 }
 
 export default function Admin() {
-  const [authenticated, setAuthenticated] = useState(() => localStorage.getItem(ADMIN_AUTH_KEY) === "true");
-  const [b2bLeads, setB2bLeads] = useState<any[]>([]);
-  const [investorLeads, setInvestorLeads] = useState<any[]>([]);
-  const [ongLeads, setOngLeads] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [session, setSession] = useState<Session | null>(null);
+  const [carregandoSessao, setCarregandoSessao] = useState(true);
+  const [leads, setLeads] = useState<LeadLoja[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [semAcesso, setSemAcesso] = useState(false);
+  const [erro, setErro] = useState<string | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      setSession(data.session);
+      setCarregandoSessao(false);
+    });
+    const { data } = supabase.auth.onAuthStateChange((_evento, novaSessao) => {
+      setSession(novaSessao);
+    });
+    return () => data.subscription.unsubscribe();
+  }, []);
 
   const fetchLeads = useCallback(async () => {
     setLoading(true);
+    setErro(null);
     try {
-      const [b2bResult, investorResult, ongResult] = await Promise.all([
-        supabase.functions.invoke("admin-leads", { body: { table: "b2b_leads" } }),
-        supabase.functions.invoke("admin-leads", { body: { table: "investor_leads" } }),
-        supabase.functions.invoke("admin-leads", { body: { table: "ong_leads" } }),
-      ]);
-
-      if (b2bResult.error) throw b2bResult.error;
-      if (investorResult.error) throw investorResult.error;
-      if (ongResult.error) throw ongResult.error;
-
-      setB2bLeads(Array.isArray(b2bResult.data) ? b2bResult.data : []);
-      setInvestorLeads(Array.isArray(investorResult.data) ? investorResult.data : []);
-      setOngLeads(Array.isArray(ongResult.data) ? ongResult.data : []);
+      const { data, error } = await supabase.functions.invoke("admin-leads");
+      if (error) {
+        const status = statusDoErro(error);
+        if (status === 403) {
+          setSemAcesso(true);
+        } else if (status === 401) {
+          await supabase.auth.signOut();
+          setSession(null);
+        } else {
+          setErro("Não deu para carregar os leads. Tente de novo.");
+        }
+        return;
+      }
+      setSemAcesso(false);
+      setLeads(Array.isArray(data) ? data : []);
     } catch (e) {
-      console.error("Error fetching leads:", e);
+      console.error("Erro ao buscar leads:", e);
+      setErro("Não deu para carregar os leads. Tente de novo.");
     } finally {
       setLoading(false);
     }
   }, []);
 
+  const token = session?.access_token;
   useEffect(() => {
-    if (authenticated) fetchLeads();
-  }, [authenticated, fetchLeads]);
+    if (token) fetchLeads();
+  }, [token, fetchLeads]);
 
-  const handleLogout = () => {
-    localStorage.removeItem(ADMIN_AUTH_KEY);
-    setAuthenticated(false);
-    setB2bLeads([]);
-    setInvestorLeads([]);
-    setOngLeads([]);
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setSession(null);
+    setLeads([]);
+    setSemAcesso(false);
+    setErro(null);
   };
 
-  if (!authenticated) {
-    return <LoginScreen onAuth={() => setAuthenticated(true)} />;
+  if (carregandoSessao) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
+  if (!session) {
+    return <LoginScreen />;
   }
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-2xl font-bold tracking-tight">Zera Admin — Gestão de Leads</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Zera Admin: Gestão de Leads</h1>
           <div className="flex items-center gap-2">
-            <Button onClick={fetchLeads} disabled={loading} variant="outline" size="sm">
-              {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <RefreshCw className="w-4 h-4 mr-2" />}
-              Atualizar Dados
-            </Button>
+            {!semAcesso && (
+              <Button onClick={fetchLeads} disabled={loading} variant="outline" size="sm">
+                {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <RefreshCw className="w-4 h-4 mr-2" />}
+                Atualizar Dados
+              </Button>
+            )}
             <Button onClick={handleLogout} variant="ghost" size="sm" className="text-destructive hover:text-destructive">
               <LogOut className="w-4 h-4 mr-2" />
               Sair
@@ -125,114 +175,52 @@ export default function Admin() {
           </div>
         </div>
 
-        <Tabs defaultValue="b2b">
-          <TabsList>
-            <TabsTrigger value="b2b">Leads B2B (Demo)</TabsTrigger>
-            <TabsTrigger value="investors">Investidores</TabsTrigger>
-            <TabsTrigger value="ongs">ONGs Cadastradas</TabsTrigger>
-          </TabsList>
+        {semAcesso ? (
+          <p className="text-center text-muted-foreground py-16">Este e-mail não tem acesso.</p>
+        ) : (
+          <Tabs defaultValue="leads">
+            <TabsList>
+              <TabsTrigger value="leads">Leads Zera</TabsTrigger>
+            </TabsList>
 
-          <TabsContent value="b2b">
-            {loading ? (
-              <div className="flex justify-center py-16"><Loader2 className="w-6 h-6 animate-spin text-muted-foreground" /></div>
-            ) : b2bLeads.length === 0 ? (
-              <p className="text-center text-muted-foreground py-16">Nenhum lead encontrado.</p>
-            ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Data</TableHead>
-                    <TableHead>Nome</TableHead>
-                    <TableHead>Empresa</TableHead>
-                    <TableHead>Cargo</TableHead>
-                    <TableHead>E-mail</TableHead>
-                    <TableHead>Volume de Lojas</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {b2bLeads.map((l) => (
-                    <TableRow key={l.id}>
-                      <TableCell className="whitespace-nowrap">{formatDate(l.created_at)}</TableCell>
-                      <TableCell>{l.nome_completo}</TableCell>
-                      <TableCell>{l.nome_empresa}</TableCell>
-                      <TableCell>{l.cargo}</TableCell>
-                      <TableCell>{l.email_corporativo}</TableCell>
-                      <TableCell>{l.volume_lojas}</TableCell>
+            <TabsContent value="leads">
+              {loading ? (
+                <div className="flex justify-center py-16"><Loader2 className="w-6 h-6 animate-spin text-muted-foreground" /></div>
+              ) : erro ? (
+                <p className="text-center text-destructive py-16">{erro}</p>
+              ) : leads.length === 0 ? (
+                <p className="text-center text-muted-foreground py-16">Nenhum lead encontrado.</p>
+              ) : (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Data</TableHead>
+                      <TableHead>Nome</TableHead>
+                      <TableHead>Comércio</TableHead>
+                      <TableHead>Cidade</TableHead>
+                      <TableHead>WhatsApp</TableHead>
+                      <TableHead>Sistema de caixa</TableHead>
+                      <TableHead>Mensagem</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
-          </TabsContent>
-
-          <TabsContent value="investors">
-            {loading ? (
-              <div className="flex justify-center py-16"><Loader2 className="w-6 h-6 animate-spin text-muted-foreground" /></div>
-            ) : investorLeads.length === 0 ? (
-              <p className="text-center text-muted-foreground py-16">Nenhum lead encontrado.</p>
-            ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Data</TableHead>
-                    <TableHead>Nome</TableHead>
-                    <TableHead>E-mail</TableHead>
-                    <TableHead>LinkedIn</TableHead>
-                    <TableHead>Perfil</TableHead>
-                    <TableHead>Mensagem</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {investorLeads.map((l) => (
-                    <TableRow key={l.id}>
-                      <TableCell className="whitespace-nowrap">{formatDate(l.created_at)}</TableCell>
-                      <TableCell>{l.nome}</TableCell>
-                      <TableCell>{l.email}</TableCell>
-                      <TableCell>
-                        {l.linkedin ? <a href={l.linkedin} target="_blank" rel="noopener noreferrer" className="text-primary underline">{l.linkedin}</a> : "—"}
-                      </TableCell>
-                      <TableCell>{l.perfil || "—"}</TableCell>
-                      <TableCell className="max-w-xs truncate">{l.mensagem || "—"}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
-          </TabsContent>
-
-          <TabsContent value="ongs">
-            {loading ? (
-              <div className="flex justify-center py-16"><Loader2 className="w-6 h-6 animate-spin text-muted-foreground" /></div>
-            ) : ongLeads.length === 0 ? (
-              <p className="text-center text-muted-foreground py-16">Nenhuma ONG cadastrada.</p>
-            ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Data</TableHead>
-                    <TableHead>Nome da ONG</TableHead>
-                    <TableHead>CNPJ</TableHead>
-                    <TableHead>Responsável</TableHead>
-                    <TableHead>E-mail</TableHead>
-                    <TableHead>Telefone</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {ongLeads.map((l) => (
-                    <TableRow key={l.id}>
-                      <TableCell className="whitespace-nowrap">{formatDate(l.created_at)}</TableCell>
-                      <TableCell>{l.nome_ong}</TableCell>
-                      <TableCell>{l.cnpj}</TableCell>
-                      <TableCell>{l.nome_responsavel}</TableCell>
-                      <TableCell>{l.email}</TableCell>
-                      <TableCell>{l.telefone || "—"}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
-          </TabsContent>
-        </Tabs>
+                  </TableHeader>
+                  <TableBody>
+                    {leads.map((l) => (
+                      <TableRow key={l.id}>
+                        <TableCell className="whitespace-nowrap">{formatDate(l.created_at)}</TableCell>
+                        <TableCell>{l.nome}</TableCell>
+                        <TableCell>{l.nome_comercio}</TableCell>
+                        <TableCell>{l.cidade}</TableCell>
+                        <TableCell className="whitespace-nowrap">{l.whatsapp}</TableCell>
+                        <TableCell>{l.sistema_caixa}</TableCell>
+                        <TableCell className="max-w-xs truncate">{l.mensagem ?? ""}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
+            </TabsContent>
+          </Tabs>
+        )}
       </div>
     </div>
   );

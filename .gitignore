@@ -23,3 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 .vercel
+
+# Cache local da CLI do Supabase (projeto ligado)
+supabase/.temp/

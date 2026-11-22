@@ -17,7 +17,7 @@
 Tabela `public.leads_loja`: `id uuid pk default gen_random_uuid()`, `created_at timestamptz not null default now()`, `nome text not null`, `whatsapp text not null`, `cidade text not null`, `nome_comercio text not null`, `sistema_caixa text not null check (sistema_caixa in ('VR System','Hiper','Outro','Não sei'))`, `mensagem text`, com checks de tamanho iguais aos do requirements. RLS ligado e NENHUMA policy para anon ou authenticated: só a service role (edge functions) lê e grava.
 
 ## D2. Função `capture-lead-loja` (nova, `verify_jwt = false`)
-Recebe POST JSON, valida com uma função pura `validarLead` (arquivo próprio, testada com Deno test ou Vitest importando o mesmo módulo), normaliza o WhatsApp, grava com service role e envia o e-mail pela Resend com `Deno.env.get("RESEND_API_KEY")`. Falha no e-mail não desfaz a gravação; só loga. Respostas: 200 `{success:true}`, 400 `{error:"<mensagem>"}`, 500 `{error:"Erro interno."}`.
+Recebe POST JSON, valida com uma função pura `validarLead` (arquivo próprio, testada com Deno test ou Vitest importando o mesmo módulo), normaliza o WhatsApp, grava com service role e envia o e-mail pela Resend com `Deno.env.get("RESEND_API_KEY")`, de `Zera Leads <zera@avisos.connectideia.com.br>` (domínio já verificado na Resend) para o endereço do secret `LEADS_EMAIL_TO` (nenhum destinatário no código; `atendimento@zera.eco.br` não recebe e-mail). Sem `RESEND_API_KEY` ou `LEADS_EMAIL_TO`, a função grava o lead e só loga. Falha no e-mail não desfaz a gravação; só loga. Respostas: 200 `{success:true}`, 400 `{error:"<mensagem>"}`, 500 `{error:"Erro interno."}`.
 
 ## D3. Função `admin-leads` (reescrita) e tela /admin
 - A função lê o header `Authorization: Bearer <jwt>`, valida com `supabase.auth.getUser(jwt)` e confere o e-mail, em minúsculas, contra o secret `ADMIN_EMAILS` (lista separada por vírgula). Sem token ou token inválido: 401. Fora da lista: 403. Única tabela lida: `leads_loja` (sem parâmetro de tabela).
@@ -28,6 +28,6 @@ Mesma estrutura e classes. Troca textos e nomes dos campos conforme o requiremen
 
 ## D5. Configuração (feita pelo Leonardo, o agente lista o passo a passo no relatório)
 - Staging `zera-staging` já criado. O Leonardo passa a URL e a anon key para o `.env.local`; a service role nunca vai para o front.
-- Em staging e produção: secrets `RESEND_API_KEY` e `ADMIN_EMAILS`; Auth com cadastro público desligado; usuários do /admin criados no painel.
+- Em staging e produção: secrets `RESEND_API_KEY`, `ADMIN_EMAILS` e `LEADS_EMAIL_TO` (destino do aviso de lead; hoje `leonardo.informatica@gmail.com`); Auth com cadastro público desligado; usuários do /admin criados no painel.
 - Resend: gerar chave nova e revogar a antiga (ela está no histórico do git).
 - Projeto antigo: o Leonardo desliga a função `admin-leads` (ou pausa o projeto) depois de exportar o que quiser guardar.
