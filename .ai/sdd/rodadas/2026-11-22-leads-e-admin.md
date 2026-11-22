@@ -11,6 +11,9 @@
 
 ## Execute T1 a T7 do `tasks.md`, em ordem, um commit por task, push ao fim de cada uma.
 
+## Lint
+Falhas conhecidas e aceitas: `src/components/landing/Hero.tsx`, `src/components/ui/command.tsx`, `src/components/ui/textarea.tsx`, `tailwind.config.ts` (fora do escopo). `DemoModal.tsx` e `Admin.tsx` são reescritos nesta rodada e precisam sair dela sem erro de lint.
+
 ## Paradas
 Pare SOMENTE se: decisão de produto não escrita na spec; algo exigir tocar produção; CI vermelho fora do esperado; ambiguidade não coberta. Nunca aplique migração, secret ou deploy em produção: isso é a T7, feita pelo Leonardo.
 
