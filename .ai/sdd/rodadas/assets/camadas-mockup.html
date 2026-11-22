@@ -1,0 +1,79 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Mockup aprovado: seção As camadas (22/11/2026)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<style>
+body{margin:0;background:#0c1714;font-family:Inter,system-ui,sans-serif;padding:40px}
+:root{--font-mono:ui-monospace,Menlo,monospace}
+.zw{max-width:680px;margin:auto;color:#eef2f0}
+.zl{font-family:var(--font-mono);font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:#00e699}
+.zg{display:grid;grid-template-columns:330px minmax(0,1fr);gap:18px;align-items:center;margin-top:20px}
+.orb{position:relative;width:330px;height:300px}
+.orb button.nd{all:unset;box-sizing:border-box;position:absolute;transform:translate(-50%,-50%);padding:7px 13px;border-radius:999px;background:#0e1b17;border:1px solid #ffffff1c;color:#eef2f0a6;font-size:12px;font-weight:500;white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all .3s;z-index:3}
+.orb button.nd i{width:6px;height:6px;border-radius:50%;background:#ffffff33;transition:all .3s}
+.orb button.nd:hover{border-color:#00e69999;color:#fff;transform:translate(-50%,-50%) scale(1.07)}
+.orb.idle button.nd:not(.on){animation:wv 4.8s ease-in-out infinite}
+@keyframes wv{0%,80%,100%{border-color:#ffffff1c;color:#eef2f0a6}8%{border-color:#00e69999;color:#fff;box-shadow:0 0 18px -4px #00e69980}}
+.orb button.nd.on{border-color:#00e699;color:#fff;background:#10261f;box-shadow:0 0 0 4px #00e69914,0 8px 24px -8px #00e69966}
+.orb button.nd.on i{background:#00e699;box-shadow:0 0 8px #00e699}
+.spin{transform-origin:165px 150px;animation:sp 40s linear infinite}
+.pulse{transform-origin:165px 150px;animation:pu 3.2s ease-in-out infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@keyframes pu{0%,100%{opacity:.35;transform:scale(1)}50%{opacity:.75;transform:scale(1.06)}}
+.hint{position:absolute;left:165px;top:228px;transform:translateX(-50%);display:flex;align-items:center;gap:6px;font-size:11.5px;color:#00e699;white-space:nowrap;z-index:2;transition:opacity .4s}
+.hint i{animation:tp 1.4s ease-in-out infinite}
+@keyframes tp{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+.card{background:#ffffff0a;border:1px solid #ffffff14;border-radius:24px;padding:20px 22px;position:relative;overflow:hidden}
+.bar{position:absolute;left:0;top:0;height:2px;background:#00e699;width:0}
+.bar.go{transition:width 4s linear;width:100%}
+.st{display:grid;grid-template-columns:22px 1fr;gap:6px;font-size:14px;color:#eef2f0cc;line-height:1.5;margin:6px 0}
+.fade{animation:fd .35s ease-out}
+@keyframes fd{from{opacity:0;transform:translateY(6px)}}
+</style></head><body>
+<div class="zw">
+<div style="display:flex;align-items:center;gap:10px"><span style="width:28px;height:1px;background:#00e699"></span><span class="zl">As camadas</span></div>
+<div style="font-size:30px;font-weight:700;letter-spacing:-.03em;line-height:1.05;margin-top:12px">Tudo o que vaza da sua loja.<br><span style="color:#00e699">Num lugar só.</span></div>
+<div style="font-size:15px;color:#eef2f0b3;margin-top:10px;max-width:500px;line-height:1.6">O Zera trabalha junto com o sistema do seu caixa. Cada camada cuida de um jeito diferente que o dinheiro escapa.</div>
+<div class="zg">
+<div class="orb idle" id="orb">
+<svg width="330" height="300" style="position:absolute;inset:0" aria-hidden="true">
+<defs>
+<radialGradient id="halo" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#00e699" stop-opacity=".28"/><stop offset="1" stop-color="#00e699" stop-opacity="0"/></radialGradient>
+<radialGradient id="core" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#1c4a3b"/><stop offset=".6" stop-color="#0f2a22"/><stop offset="1" stop-color="#0a1c17"/></radialGradient>
+<linearGradient id="beam" gradientUnits="userSpaceOnUse" x1="165" y1="150" x2="165" y2="38"><stop offset="0" stop-color="#00e699" stop-opacity=".9"/><stop offset="1" stop-color="#00e699" stop-opacity=".15"/></linearGradient>
+</defs>
+<circle cx="165" cy="150" r="112" fill="none" stroke="#ffffff12"/>
+<g class="spin"><circle cx="165" cy="150" r="84" fill="none" stroke="#00e699" stroke-opacity=".35" stroke-dasharray="2 9" stroke-linecap="round"/></g>
+<circle cx="165" cy="150" r="62" fill="none" stroke="#ffffff0f"/>
+<line id="beamL" x1="165" y1="150" x2="165" y2="38" stroke="url(#beam)" stroke-width="1.5"/>
+<circle id="beamD" r="3" fill="#00e699"><animate attributeName="opacity" values="0;1;0" dur="1.6s" repeatCount="indefinite"/></circle>
+<circle class="pulse" cx="165" cy="150" r="70" fill="url(#halo)"/>
+<circle cx="165" cy="150" r="46" fill="url(#core)" stroke="#00e699" stroke-opacity=".7"/>
+<circle cx="165" cy="150" r="52" fill="none" stroke="#00e699" stroke-opacity=".15"/>
+</svg>
+<div style="position:absolute;left:165px;top:150px;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:3px;z-index:2;pointer-events:none">
+<i class="ti ti-cash-register" style="font-size:22px;color:#00e699"></i>
+<span style="font-size:12.5px;font-weight:600;color:#fff">Seu caixa</span>
+</div>
+<div class="hint" id="hint"><i class="ti ti-hand-finger" style="font-size:14px"></i>Toque em uma camada</div>
+</div>
+<div class="card" id="card"><div class="bar" id="bar"></div><div id="body"></div></div>
+</div>
+</div>
+<script>
+var M=[
+{n:'Fechamento',q:'Resumo do dia',z:'o que você não vê',t:'Todo dia de manhã, chega no seu WhatsApp como foi o dia anterior.',c:['Quanto vendeu e quanto sobrou de lucro','Se foi melhor ou pior que a semana passada e o ano passado','Só o que precisa da sua atenção'],i:'30 segundos',il:'para saber como foi o dia'},
+{n:'Conferência',q:'Olho no caixa',z:'a diferença no caixa',t:'Você sabe qual caixa está fora do normal.',c:['Cancelamentos, descontos e sangrias de cada funcionário','Avisa só quando alguém sai do padrão da loja','Chega junto com o resumo da manhã'],i:'No dia seguinte',il:'e não no fim do mês'},
+{n:'Recebimento',q:'Nota do fornecedor',z:'o custo errado',t:'A nota que chega vira preço certo no sistema.',c:['Lê a nota do fornecedor sozinho','Atualiza o custo de cada produto','Sugere o preço de venda'],i:'35% → 18%',il:'Exemplo: foi quanto caiu o lucro do tomate quando o custo subiu e o preço ficou igual'},
+{n:'Quebra',q:'Perda de perecível',z:'o desperdício',t:'Menos fruta, verdura e carne indo para o lixo.',c:['Anota o que estragou em segundos','Sugere baixar o preço antes de estragar','Ajuda a comprar só o que vai vender'],i:'5,64%',il:'do que o hortifrúti vende vira perda nas lojas de bairro (ABRAS, 2025)'},
+{n:'Acerto',q:'Taxa do cartão',z:'a taxa errada',t:'Confere se a maquininha pagou o que devia.',c:['Compara cada venda no cartão e no Pix com o que caiu na conta','Avisa quando a taxa veio maior que a combinada','Mostra quanto ainda vai cair e quando'],i:'R$ 2.110 por mês',il:'é a taxa média para cada R$ 100 mil vendidos no crédito (Banco Central)'},
+{n:'Classificação',q:'Imposto certo',z:'o imposto a mais',t:'Você não paga imposto a mais por cadastro errado.',c:['Confere o imposto de cada produto','Na hora de vender e na hora de comprar','Deixa a loja pronta para a reforma tributária'],i:'R$ 104 mil',il:'pagos a mais por empresa, em média, por erros assim (e-Auditoria)'},
+{n:'Encomenda',q:'Pedido pelo WhatsApp',z:'a venda perdida',t:'O cliente pede pelo WhatsApp e nada se perde.',c:['O pedido chega organizado','A equipe separa e entrega','Tudo entra no caixa'],i:'Nenhum pedido',il:'esquecido no meio das mensagens'},
+{n:'Freguês',q:'Cliente fiel',z:'o cliente que some',t:'Seu cliente volta mais vezes.',c:['Cashback pelo CPF na nota','Avisa quem parou de comprar','Chama de volta pelo WhatsApp'],i:'Antes de perder',il:'o cliente, você fica sabendo'}];
+var orb=document.getElementById('orb'),body=document.getElementById('body'),bar=document.getElementById('bar'),hint=document.getElementById('hint'),B=[],P=[],cur=0,auto=true,tm=null;
+var L=document.getElementById('beamL'),D=document.getElementById('beamD'),G=document.getElementById('beam');
+function show(k){cur=k;var m=M[k],p=P[k];B.forEach(function(b,j){b.className='nd'+(j===k?' on':'')});
+var ex=165+(p[0]-165)*.78,ey=150+(p[1]-150)*.78;L.setAttribute('x2',ex);L.setAttribute('y2',ey);G.setAttribute('x2',ex);G.setAttribute('y2',ey);D.setAttribute('cx',ex);D.setAttribute('cy',ey);
+body.innerHTML='<div class="fade"><span class="zl">Zera '+m.z+'</span><div style="font-size:26px;font-weight:700;letter-spacing:-.02em;margin-top:10px">'+m.n+'</div><div style="font-size:14px;color:#00e699;margin-top:2px">'+m.q+'</div><div style="font-size:15px;color:#eef2f0;margin:10px 0 12px;line-height:1.5">'+m.t+'</div>'+m.c.map(function(c,i){return '<div class="st"><span style="font-family:var(--font-mono);font-size:11px;color:#00e699;padding-top:3px">0'+(i+1)+'</span><span>'+c+'</span></div>'}).join('')+'<div style="border-top:1px solid #ffffff14;margin-top:14px;padding-top:12px"><span class="zl" style="color:#eef2f066">O que muda</span><div style="font-size:22px;font-weight:700;margin-top:6px">'+m.i+'</div><div style="font-size:13px;color:#eef2f0a6;line-height:1.5">'+m.il+'</div></div></div>';
+bar.className='bar';void bar.offsetWidth;if(auto){bar.className='bar go';clearTimeout(tm);tm=setTimeout(function(){show((cur+1)%8)},4000)}}
+M.forEach(function(m,k){var a=-Math.PI/2+k*2*Math.PI/8,x=165+112*Math.cos(a),y=150+112*Math.sin(a),b=document.createElement('button');b.type='button';b.className='nd';b.style.left=x+'px';b.style.top=y+'px';b.style.animationDelay=(k*.6)+'s';b.innerHTML='<i></i>'+m.n;b.addEventListener('click',function(){auto=false;clearTimeout(tm);orb.classList.remove('idle');hint.style.opacity='0';show(k)});orb.appendChild(b);B.push(b);P.push([x,y])});
+show(0);
+</script></body></html>
