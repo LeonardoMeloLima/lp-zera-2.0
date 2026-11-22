@@ -8,7 +8,6 @@ const corsHeaders = {
 };
 
 const REMETENTE = "Zera Leads <zera@avisos.connectideia.com.br>";
-const DESTINATARIO = "atendimento@zera.eco.br";
 
 const json = (corpo: unknown, status = 200) =>
   new Response(JSON.stringify(corpo), {
@@ -25,8 +24,9 @@ const escapar = (valor: string) =>
 
 async function enviarAviso(lead: LeadLoja) {
   const chave = Deno.env.get("RESEND_API_KEY");
-  if (!chave) {
-    console.error("RESEND_API_KEY ausente; e-mail não enviado.");
+  const destinatario = Deno.env.get("LEADS_EMAIL_TO")?.trim();
+  if (!chave || !destinatario) {
+    console.error("RESEND_API_KEY ou LEADS_EMAIL_TO ausente; e-mail não enviado.");
     return;
   }
   const linhas: [string, string][] = [
@@ -49,7 +49,7 @@ async function enviarAviso(lead: LeadLoja) {
     headers: { Authorization: `Bearer ${chave}`, "Content-Type": "application/json" },
     body: JSON.stringify({
       from: REMETENTE,
-      to: [DESTINATARIO],
+      to: [destinatario],
       subject: `Novo lead Zera: ${lead.nome_comercio}`,
       html,
     }),
