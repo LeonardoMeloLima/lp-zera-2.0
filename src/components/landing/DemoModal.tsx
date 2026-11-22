@@ -159,6 +159,13 @@ export default function DemoModal({ open, onClose }: DemoModalProps) {
                     </>
                   )}
                 </button>
+                <p className="-mt-3 text-center text-xs font-sans text-white/40">
+                  Ao enviar, você concorda com a nossa{" "}
+                  <a href="/privacidade" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-white transition-colors">
+                    Política de Privacidade
+                  </a>
+                  .
+                </p>
 
                 <div className="flex flex-col gap-2 items-center justify-center py-4 border-t border-white/5 mt-2">
                   <div className="flex items-center gap-2">

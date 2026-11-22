@@ -44,6 +44,18 @@ describe("DemoModal", () => {
     expect(opcoes).toEqual(["Sistema de caixa", "VR System", "Hiper", "Outro", "Não sei"]);
   });
 
+  it("mostra o aviso da Política de Privacidade abaixo do Enviar, com link em nova aba", () => {
+    render(<DemoModal open onClose={() => {}} />);
+    const aviso = screen.getByText(/Ao enviar, você concorda com a nossa/);
+    expect(aviso.textContent).toBe("Ao enviar, você concorda com a nossa Política de Privacidade.");
+    const link = screen.getByRole("link", { name: "Política de Privacidade" });
+    expect(link).toHaveAttribute("href", "/privacidade");
+    expect(link).toHaveAttribute("target", "_blank");
+    expect(link.getAttribute("rel")).toContain("noopener");
+    const enviar = screen.getByRole("button", { name: /Enviar/ });
+    expect(enviar.nextElementSibling).toBe(aviso);
+  });
+
   it("envia os campos para capture-lead-loja e confirma o recebimento", async () => {
     invoke.mockResolvedValue({ data: { success: true }, error: null });
     const onClose = vi.fn();
