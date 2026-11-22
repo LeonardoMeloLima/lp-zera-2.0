@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { CloudLightning, Zap, Heart, ArrowRight, Database, ShieldCheck } from "lucide-react";
-import { useONGModal } from "@/hooks/use-ong-modal";
+import { useDemoModal } from "@/hooks/use-demo-modal";
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 30 },
@@ -42,7 +42,7 @@ const features = [
 ];
 
 export default function Features() {
-  const { setOpen: openONGModal } = useONGModal();
+  const { setOpen: openDemoModal } = useDemoModal();
   const [activeFeature, setActiveFeature] = useState<number | string | null>(null);
 
   return (
@@ -173,7 +173,7 @@ export default function Features() {
 
             <div className="flex flex-wrap gap-6 items-center justify-center">
               <button
-                onClick={() => openONGModal(true)}
+                onClick={() => openDemoModal(true)}
                 className="btn-zera-emerald group h-14 px-8"
               >
                 Cadastrar Instituição
