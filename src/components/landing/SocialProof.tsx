@@ -2,14 +2,14 @@ import { motion } from "framer-motion";
 import { FileCode2, Barcode, ShieldCheck, Leaf, Database, Zap, Cpu, FileCheck } from "lucide-react";
 
 const tags = [
-  { icon: FileCode2, label: "Sefaz Integration" },
-  { icon: Barcode, label: "GS1 Global Standards" },
-  { icon: ShieldCheck, label: "ISO 27001 Security" },
-  { icon: Leaf, label: "MRV - Tokens Certified Protocol" },
-  { icon: Database, label: "Encrypted Data Lake" },
-  { icon: Zap, label: "NCM Automation" },
-  { icon: Cpu, label: "Market Intelligence" },
-  { icon: FileCheck, label: "ESG Audit Ready" },
+  { icon: FileCode2, label: "Sem trocar o seu PDV" },
+  { icon: Barcode, label: "Primeiro conector: VR System" },
+  { icon: ShieldCheck, label: "Só leitura dos dados" },
+  { icon: Leaf, label: "Resumo às 6h no WhatsApp" },
+  { icon: Database, label: "Comparativo por dia da semana" },
+  { icon: Zap, label: "Alertas de caixa por operador" },
+  { icon: Cpu, label: "Margem por produto" },
+  { icon: FileCheck, label: "Mensalidade fixa" },
 ];
 
 const doubleTags = [...tags, ...tags];
@@ -27,7 +27,7 @@ export default function SocialProof() {
           viewport={{ once: true }}
           className="text-center text-[10px] font-mono font-bold uppercase tracking-[0.4em] mb-12 text-[hsl(var(--zera-emerald))]"
         >
-          Infraestrutura & Conformidade Global
+          Feito para o balcão
         </motion.p>
 
         <div className="marquee-wrap relative">
