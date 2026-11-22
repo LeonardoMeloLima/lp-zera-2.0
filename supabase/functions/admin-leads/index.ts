@@ -1,54 +1,47 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient } from "npm:@supabase/supabase-js@2";
+import { emailAutorizado } from "../_shared/adminEmails.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
 };
 
+const json = (corpo: unknown, status = 200) =>
+  new Response(JSON.stringify(corpo), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
+
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
-  }
+  if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
-    const supabaseAdmin = createClient(
+    const cabecalho = req.headers.get("Authorization") ?? "";
+    const jwt = cabecalho.startsWith("Bearer ") ? cabecalho.slice(7).trim() : "";
+    if (!jwt) return json({ error: "Não autenticado." }, 401);
+
+    const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
 
-    let table: string | null = null;
+    const { data: sessao, error: erroSessao } = await supabase.auth.getUser(jwt);
+    if (erroSessao || !sessao?.user) return json({ error: "Não autenticado." }, 401);
 
-    if (req.method !== "GET") {
-      const body = await req.json().catch(() => null);
-      table = body?.table ?? null;
+    if (!emailAutorizado(sessao.user.email, Deno.env.get("ADMIN_EMAILS"))) {
+      return json({ error: "Este e-mail não tem acesso." }, 403);
     }
 
-    if (!table) {
-      const url = new URL(req.url);
-      table = url.searchParams.get("table");
-    }
-
-    if (table !== "b2b_leads" && table !== "investor_leads" && table !== "ong_leads") {
-      return new Response(JSON.stringify({ error: "Invalid table" }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-
-    const { data, error } = await supabaseAdmin
-      .from(table)
+    const { data, error } = await supabase
+      .from("leads_loja")
       .select("*")
       .order("created_at", { ascending: false });
-
     if (error) throw error;
 
-    return new Response(JSON.stringify(data), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
-  } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return json(data);
+  } catch (erro) {
+    console.error("admin-leads:", erro);
+    return json({ error: "Erro interno." }, 500);
   }
 });
