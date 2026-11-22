@@ -1,6 +1,6 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const RESEND_API_KEY = "re_7Qhuf4q3_HCUCdqAkRN5pbFg95bcv2tfM";
+const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 const DESTINATION_EMAIL = "atendimento@zera.eco.br";
 
 const corsHeaders = {
