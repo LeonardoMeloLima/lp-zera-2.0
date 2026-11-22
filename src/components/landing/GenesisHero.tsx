@@ -42,7 +42,7 @@ export default function GenesisHero() {
                     <motion.div {...fadeUp(0.1)} className="flex items-center gap-3">
                         <div className="w-12 h-[1px] bg-white/20" />
                         <span className="mono-label text-[10px] tracking-[0.4em] text-[hsl(var(--zera-emerald))] font-bold uppercase">
-                            Meio Ambiente, Social e Governança
+                            Gestão para o pequeno comércio
                         </span>
                     </motion.div>
 
@@ -50,15 +50,15 @@ export default function GenesisHero() {
                         {...fadeUp(0.2)}
                         className="text-6xl md:text-7xl lg:text-8xl font-sans font-bold leading-[0.9] tracking-tighter text-white"
                     >
-                        Rentabilize seu <br />
-                        <span className="text-gradient-genesis">Desperdício.</span>
+                        Zera o que vaza <br />
+                        <span className="text-gradient-genesis">da sua loja.</span>
                     </motion.h1>
 
                     <motion.p
                         {...fadeUp(0.3)}
                         className="max-w-xl text-lg text-white/60 leading-relaxed font-sans"
                     >
-                        A única plataforma que une gestão preditiva de validades, diminuiu o desperdício gerando ativos e tokens que valem dinheiro, e conecta suas perdas evitadas a quem mais precisa através do nosso Radar de ONGs.
+                        Toda manhã, no seu WhatsApp, o resumo de ontem: vendas, margem e caixa, comparados com o mesmo dia da semana passada, do mês passado e do ano passado. Funciona com o sistema de caixa que você já usa.
                     </motion.p>
 
                     <motion.div {...fadeUp(0.4)} className="flex items-center gap-6 mt-4">
@@ -66,19 +66,19 @@ export default function GenesisHero() {
                             onClick={() => openDemoModal(true)}
                             className="btn-zera-emerald group"
                         >
-                            Agendar Demo
+                            Quero testar
                             <div className="absolute -inset-1 bg-white/10 blur opacity-0 group-hover:opacity-100 transition-opacity" />
                         </button>
 
-                        <a href="#fluxo" className="flex items-center gap-2 text-white/50 text-xs font-mono tracking-widest uppercase hover:text-white transition-colors cursor-pointer">
-                            Ver Ecossistema ESG <ArrowRight size={14} />
+                        <a href="#funcionalidades" className="flex items-center gap-2 text-white/50 text-xs font-mono tracking-widest uppercase hover:text-white transition-colors cursor-pointer">
+                            Ver as camadas <ArrowRight size={14} />
                         </a>
                     </motion.div>
 
                     <motion.div {...fadeUp(0.5)} className="flex items-center gap-8 mt-6">
                         <div className="flex flex-col gap-1">
-                            <span className="text-2xl font-bold text-white leading-none">30%</span>
-                            <span className="text-[10px] text-white/30 uppercase tracking-widest font-mono">Redução Média de Perdas (Estimativa)</span>
+                            <span className="text-2xl font-bold text-white leading-none">R$ 1 a cada R$ 61</span>
+                            <span className="text-[10px] text-white/30 uppercase tracking-widest font-mono">Perdido em vendas pelo varejo em 2025 (Abrappe)</span>
                         </div>
                     </motion.div>
                 </div>
@@ -103,7 +103,7 @@ export default function GenesisHero() {
                                 playsInline
                                 className="w-full h-auto rounded-[32px] object-contain shadow-2xl"
                             >
-                                <source src="/video.mp4" type="video/mp4" />
+                                <source src="/video-fechamento.mp4" type="video/mp4" />
                                 Your browser does not support the video tag.
                             </video>
 

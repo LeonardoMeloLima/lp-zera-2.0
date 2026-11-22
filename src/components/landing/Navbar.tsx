@@ -5,8 +5,10 @@ import { toast } from "sonner";
 import { useDemoModal } from "@/hooks/use-demo-modal";
 
 const navLinks: { label: string; href: string; highlight?: boolean }[] = [
-  { label: "Funcionalidades", href: "#funcionalidades" },
-  { label: "Nosso Ecossistema", href: "#ecossistema-esg" },
+  { label: "Camadas", href: "#funcionalidades" },
+  { label: "Como funciona", href: "#ecossistema-esg" },
+  { label: "Dúvidas", href: "#faq" },
+  { label: "Calculadora", href: "#calculadora", highlight: true },
 ];
 
 export default function Navbar() {
@@ -60,7 +62,7 @@ export default function Navbar() {
               onClick={() => openDemoModal(true)}
               className="relative px-6 py-2.5 rounded-full text-[10px] font-black tracking-[0.2em] uppercase bg-[hsl(var(--zera-emerald))] text-white hover:scale-105 transition-all shadow-lg shadow-[hsl(var(--zera-emerald))/0.2] cursor-pointer"
             >
-              Agendar Demo
+              Quero testar
             </button>
           </div>
 
@@ -108,7 +110,7 @@ export default function Navbar() {
                   onClick={() => { openDemoModal(true); setMobileOpen(false); }}
                   className="w-full py-3 rounded-full text-xs font-black tracking-[0.2em] uppercase bg-[hsl(var(--zera-emerald))] text-white shadow-lg shadow-[hsl(var(--zera-emerald))/0.2] cursor-pointer"
                 >
-                  Agendar Demo
+                  Quero testar
                 </button>
               </div>
             </div>
