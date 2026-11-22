@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, within } from "@testing-library/react";
+import { act, render, screen, fireEvent, within } from "@testing-library/react";
 import CamadasOrbita from "./CamadasOrbita";
 import { camadas } from "./camadas";
 
@@ -27,6 +27,103 @@ class FakeIO {
 beforeEach(() => {
   observadores.length = 0;
   Object.defineProperty(window, "IntersectionObserver", { writable: true, value: FakeIO });
+});
+
+function secaoNaTela(visivel: boolean) {
+  const secao = document.querySelector("section#funcionalidades")!;
+  act(() => {
+    for (const o of observadores) {
+      if (o.alvos.includes(secao)) o.cb([{ isIntersecting: visivel, target: secao }]);
+    }
+  });
+}
+
+const ativa = () => within(screen.getByTestId("camada-card")).getByRole("heading").textContent;
+const passar = (ms: number) => act(() => void vi.advanceTimersByTime(ms));
+
+describe("CamadasOrbita: tour", () => {
+  beforeEach(() => vi.useFakeTimers());
+  afterEach(() => vi.useRealTimers());
+
+  it("só começa quando a seção entra na tela e avança a cada 4 s", () => {
+    render(<CamadasOrbita />);
+    passar(8000);
+    expect(ativa()).toBe("Fechamento");
+
+    secaoNaTela(true);
+    expect(screen.getByTestId("camada-progresso")).toBeInTheDocument();
+    passar(3999);
+    expect(ativa()).toBe("Fechamento");
+    passar(1);
+    expect(ativa()).toBe("Conferência");
+    passar(4000);
+    expect(ativa()).toBe("Recebimento");
+  });
+
+  it("volta para a primeira depois da oitava", () => {
+    render(<CamadasOrbita />);
+    secaoNaTela(true);
+    for (let i = 0; i < 7; i++) passar(4000);
+    expect(ativa()).toBe("Freguês");
+    passar(4000);
+    expect(ativa()).toBe("Fechamento");
+  });
+
+  it("pausa quando a seção sai da tela e retoma quando volta", () => {
+    render(<CamadasOrbita />);
+    secaoNaTela(true);
+    passar(2000);
+    secaoNaTela(false);
+    passar(10000);
+    expect(ativa()).toBe("Fechamento");
+    expect(screen.queryByTestId("camada-progresso")).toBeNull();
+
+    secaoNaTela(true);
+    passar(4000);
+    expect(ativa()).toBe("Conferência");
+  });
+
+  it("mostra a onda e o convite enquanto ninguém clicou", () => {
+    render(<CamadasOrbita />);
+    expect(screen.getByText("Toque em uma camada")).toBeInTheDocument();
+    expect(screen.getByTestId("camadas-orbita")).toHaveAttribute("data-idle", "true");
+  });
+
+  it("o clique para o tour de vez, some a onda e o convite e mostra a camada tocada", () => {
+    render(<CamadasOrbita />);
+    secaoNaTela(true);
+    passar(4000);
+    fireEvent.click(screen.getByRole("button", { name: /Ver camada Quebra/ }));
+    expect(ativa()).toBe("Quebra");
+    expect(screen.queryByText("Toque em uma camada")).toBeNull();
+    expect(screen.getByTestId("camadas-orbita")).toHaveAttribute("data-idle", "false");
+    expect(screen.queryByTestId("camada-progresso")).toBeNull();
+
+    passar(12000);
+    expect(ativa()).toBe("Quebra");
+    secaoNaTela(false);
+    secaoNaTela(true);
+    passar(12000);
+    expect(ativa()).toBe("Quebra");
+  });
+
+  it("com prefers-reduced-motion não faz tour nem onda, mas o clique funciona", () => {
+    const original = window.matchMedia;
+    window.matchMedia = ((q: string) => ({ ...original(q), matches: q.includes("reduce") })) as typeof window.matchMedia;
+    try {
+      render(<CamadasOrbita />);
+      secaoNaTela(true);
+      passar(8000);
+      expect(ativa()).toBe("Fechamento");
+      expect(screen.queryByTestId("camada-progresso")).toBeNull();
+      expect(screen.getByTestId("camadas-orbita")).toHaveAttribute("data-idle", "false");
+
+      fireEvent.click(screen.getByRole("button", { name: /Ver camada Freguês/ }));
+      expect(ativa()).toBe("Freguês");
+    } finally {
+      window.matchMedia = original;
+    }
+  });
 });
 
 describe("CamadasOrbita", () => {
