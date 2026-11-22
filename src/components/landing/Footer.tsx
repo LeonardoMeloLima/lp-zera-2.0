@@ -49,14 +49,14 @@ export default function Footer() {
             <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center bg-white/[0.02]">
               <Globe size={18} className="text-[#2ECC71]" />
             </div>
-            <span className="text-sm font-medium text-white/60">São Paulo, BR • Global Compliance</span>
+            <span className="text-sm font-medium text-white/60">São Paulo, Brasil</span>
           </div>
 
           <div className="flex flex-col items-center gap-4 text-center">
             <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center bg-white/[0.02]">
               <Shield size={18} className="text-[hsl(var(--zera-emerald))]" />
             </div>
-            <span className="text-sm font-medium text-white/60">MRV - Tokens Certified Protocol</span>
+            <span className="text-sm font-medium text-white/60">Só leitura dos dados da sua loja</span>
           </div>
         </div>
 
@@ -68,13 +68,8 @@ export default function Footer() {
           </div>
 
           <p className="text-[10px] font-mono font-bold tracking-widest text-white/60 uppercase">
-            © 2026 ZERA AI Copilot • v4.2.0
+            © 2026 Zera
           </p>
-
-          <div className="flex items-center gap-3 glass-premium px-4 py-2 rounded-full border-white/5">
-            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
-            <span className="text-[9px] font-mono font-bold tracking-widest text-emerald-500/80 uppercase">Operational</span>
-          </div>
         </div>
       </div>
 

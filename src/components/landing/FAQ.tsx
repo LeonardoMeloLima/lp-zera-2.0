@@ -1,7 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Settings, DollarSign, Leaf, Plus, Minus } from "lucide-react";
+import { ChevronDown, Settings, DollarSign, ShieldCheck, Plus, Minus } from "lucide-react";
 import { useState } from "react";
-import ConversionJourneyVertical from "./ConversionJourneyVertical";
 
 const faqData = [
     {
@@ -9,70 +8,60 @@ const faqData = [
         icon: <Settings className="text-[hsl(var(--zera-emerald))]" size={20} />,
         items: [
             {
-                q: "1. A Zera precisa trocar o ERP ou o sistema de caixa do meu supermercado?",
-                a: "De forma alguma. A Zera funciona como uma camada de inteligência (plug-and-play) que se conecta ao seu ERP atual (SAP, TOTVS, Linx, etc.) via integração segura. Nós extraímos os dados de validade e estoque em tempo real, sem interferir na operação do seu caixa ou exigir a troca do seu sistema principal."
+                q: "Preciso trocar meu sistema de caixa?",
+                a: "Não. O Zera se conecta ao PDV que você já usa e só lê os dados. A rotina do caixa continua igual."
             },
             {
-                q: "2. Isso vai dar mais trabalho para o meu time no chão de loja?",
-                a: "Pelo contrário, vai automatizar o trabalho deles. Hoje, sua equipe perde horas com planilhas manuais ou no feeling visual. Nosso AI Copilot diz exatamente quais produtos precisam de atenção diária, se devem receber desconto imediato (markdown) ou se devem ser direcionados para doação, economizando tempo operacional e evitando o descarte."
+                q: "Quais sistemas funcionam?",
+                a: "Começamos pelo VR System. O Hiper vem em seguida. Se a sua loja usa outro sistema, fale com a gente."
             },
             {
-                q: "3. Minha empresa precisa entender de criptomoedas ou blockchain para usar a Zera?",
-                a: "Zero. A Zera abstrai toda a complexidade tecnológica. Sua equipe só precisa focar em operar o supermercado usando nosso sistema intuitivo. A criação, certificação e tokenização do ativo rodam em background, entregando a você apenas os relatórios e os ativos financeiros prontos."
+                q: "Vou ter que aprender um sistema novo?",
+                a: "Não. O principal chega no WhatsApp, todo dia às 6h. O painel existe para quando você quiser ver o detalhe."
+            },
+            {
+                q: "Serve para padaria, açougue e hortifrúti?",
+                a: "Sim. O Zera foi feito para o pequeno comércio: mercadinho, padaria, açougue, hortifrúti e lojas parecidas."
             }
         ]
     },
     {
-        category: "Financeiro e ROI",
+        category: "Seus dados",
+        icon: <ShieldCheck className="text-[hsl(var(--zera-emerald))]" size={20} />,
+        items: [
+            {
+                q: "O Zera mexe nos dados da minha loja?",
+                a: "Não. O acesso é só de leitura. Ele não altera preço, estoque nem venda."
+            },
+            {
+                q: "Quem vê os números da minha loja?",
+                a: "Só você e quem você autorizar."
+            },
+            {
+                q: "De onde vêm os números desta página?",
+                a: "De pesquisas públicas da Abrappe, da ABRAS, do Banco Central e da e-Auditoria. A fonte de cada um aparece junto do número."
+            }
+        ]
+    },
+    {
+        category: "Preço e começo",
         icon: <DollarSign className="text-[hsl(var(--zera-emerald))]" size={20} />,
         items: [
             {
-                q: "4. Em quanto tempo eu começo a ver o retorno financeiro (ROI) da ferramenta?",
-                a: "O retorno ocorre em duas frentes. A primeira é imediata (dentro de semanas): nosso sistema reduz diretamente a perda de perecíveis por vencimento, preservando a sua margem de lucro na prateleira. A segunda frente, que é a geração e tokenização de ativos sustentáveis, segue o ciclo de auditoria do protocolo MRV, transformando o que antes era custo com descarte em novos ativos financeiros no seu balanço."
+                q: "Quanto custa?",
+                a: "Mensalidade fixa, sem porcentagem sobre as vendas. O valor depende das camadas que você contratar."
             },
             {
-                q: "5. Qual é o modelo de cobrança da Zera?",
-                a: "Trabalhamos com um modelo SaaS (Software as a Service) alinhado ao seu volume de operação, para que a ferramenta se pague rapidamente apenas com o dinheiro que você deixa de perder no lixo."
+                q: "Como eu começo?",
+                a: "Clique em Quero testar, conte um pouco da sua loja e a gente chama você no WhatsApp."
             },
             {
-                q: "6. Como exatamente eu ganho dinheiro com esses Tokens gerados?",
-                a: "O desperdício evitado pela sua operação gera ativos digitais auditados. Você pode vendê-los no Mercado Voluntário para grandes corporações que precisam compensar suas emissões (gerando nova receita extraordinária), ou usar o lastro desses ativos para acessar linhas de crédito bancário com taxas de juros mais baratas (Linhas de Crédito ESG)."
-            }
-        ]
-    },
-    {
-        category: "MRV, Tokens e Valor Financeiro",
-        icon: <Leaf className="text-[hsl(var(--zera-emerald))]" size={20} />,
-        items: [
-            {
-                q: "7. O que significa MRV na prática?",
-                a: "Significa Medição, Relato e Verificação. É o selo de auditoria contínua que garante ao mercado financeiro que a sua redução de desperdício é real, rastreável e não foi inventada. Sem MRV, sustentabilidade é apenas marketing; com o nosso MRV, ela se torna um ativo financeiro comprovado."
+                q: "As outras camadas já existem?",
+                a: "Ainda não. O Fechamento vem primeiro e as outras chegam em sequência, começando pelo Recebimento. Depois vêm Quebra, Acerto, Classificação, Encomenda (pedido por WhatsApp e delivery) e Freguês (fidelidade e cashback pelo CPF na nota)."
             },
             {
-                q: "8. Como um simples dado de estoque se transforma em um Token que vale dinheiro na prática?",
-                a: (
-                    <div className="space-y-4">
-                        <p>
-                            Quando um sistema tradicional relata que você evitou perdas, isso é apenas uma planilha interna sem valor de mercado. O nosso MRV entra para auditar esse processo de forma independente e automática. Ao atestar que o alimento foi salvo, nós tokenizamos esse evento. Isso significa envelopar a sua eficiência em um certificado digital único (o Token).
-                        </p>
-                        <p>
-                            Bancos, fundos e grandes corporações injetam dinheiro ou dão benefícios financeiros em troca desses Tokens porque precisam adquirir ativos validados de impacto ambiental e social.
-                        </p>
-                        <ConversionJourneyVertical />
-                    </div>
-                )
-            },
-            {
-                q: "9. Quem garante que os ativos digitais gerados pelo desperdício evitado têm valor financeiro real no mercado?",
-                a: "É exatamente para isso que serve o nosso protocolo MRV. O sistema capta o dado na fonte da sua operação, audita de acordo com metodologias globais e registra essa prova de forma imutável em blockchain. Esse processo garante que o Token que você tem em mãos não é apenas um número, mas um ativo financeiro real, rastreável e à prova de fraudes, pronto para negociação ou compliance."
-            },
-            {
-                q: "10. O que acontece com os produtos que não consigo vender nem com desconto?",
-                a: "Eles entram no nosso Hub de Doação Inteligente. A Zera rastreia os produtos próximos ao vencimento e conecta sua loja a ONGs homologadas e seguras. Além de resolver o problema logístico do descarte e gerar impacto social na sua comunidade, essa ação também entra no cálculo da sua eficiência, turbinando a geração de ativos sustentáveis e garantindo benefícios fiscais."
-            },
-            {
-                q: "11. Minha empresa não tem um departamento focado em sustentabilidade. A Zera é para mim?",
-                a: "Sim! A Zera foi desenhada justamente para transformar operações de varejo tradicionais em operações avançadas e limpas, sem exigir esforço extra da sua equipe. Nós entregamos a inteligência de dados, a redução de perdas logísticas e os relatórios financeiros prontos. Você foca em gerenciar a loja e vender, nós cuidamos de transformar sua eficiência em ativos auditados."
+                q: "E se eu tiver mais de uma loja?",
+                a: "Cada loja tem o seu resumo, e você vê todas no mesmo painel."
             }
         ]
     }
@@ -107,7 +96,7 @@ export default function FAQ() {
                         Dúvidas <span className="text-gradient-emerald italic">Frequentes</span>
                     </h2>
                     <p className="text-white/40 font-sans max-w-xl mx-auto text-sm">
-                        Clique em uma categoria para explorar as soluções e garantias que a Zera oferece.
+                        Clique em uma categoria para ver as respostas.
                     </p>
                 </motion.div>
 

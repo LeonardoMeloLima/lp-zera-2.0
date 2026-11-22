@@ -3,22 +3,18 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Leaf, Menu, X } from "lucide-react";
 import { toast } from "sonner";
 import { useDemoModal } from "@/hooks/use-demo-modal";
-import { useONGModal } from "@/hooks/use-ong-modal";
-import { useInvestorModal } from "@/hooks/use-investor-modal";
 
-const navLinks = [
-  { label: "Funcionalidades", href: "#funcionalidades" },
-  { label: "Nosso Ecossistema", href: "#ecossistema-esg" },
-  { label: "Quer Investir na Zera?", href: "#", investorModal: true },
-  { label: "Cadastre sua ONG", href: "#", highlight: true, modal: true },
+const navLinks: { label: string; href: string; highlight?: boolean }[] = [
+  { label: "Camadas", href: "#funcionalidades" },
+  { label: "Como funciona", href: "#ecossistema-esg" },
+  { label: "Dúvidas", href: "#faq" },
+  { label: "Calculadora", href: "#calculadora", highlight: true },
 ];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { setOpen: openDemoModal } = useDemoModal();
-  const { setOpen: openONGModal } = useONGModal();
-  const { setOpen: openInvestorModal } = useInvestorModal();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -52,11 +48,6 @@ export default function Navbar() {
                 className={link.highlight
                   ? "text-xs font-mono font-bold tracking-[0.2em] transition-colors duration-200 cursor-pointer uppercase text-[hsl(var(--zera-emerald))]"
                   : "text-xs font-mono font-bold tracking-[0.2em] transition-colors duration-200 cursor-pointer uppercase text-white/40 hover:text-white"}
-                onClick={
-                  link.modal ? (e: React.MouseEvent) => { e.preventDefault(); openONGModal(true); }
-                    : (link as any).investorModal ? (e: React.MouseEvent) => { e.preventDefault(); openInvestorModal(true); }
-                      : undefined
-                }
               >
                 {link.label}
               </a>
@@ -71,7 +62,7 @@ export default function Navbar() {
               onClick={() => openDemoModal(true)}
               className="relative px-6 py-2.5 rounded-full text-[10px] font-black tracking-[0.2em] uppercase bg-[hsl(var(--zera-emerald))] text-white hover:scale-105 transition-all shadow-lg shadow-[hsl(var(--zera-emerald))/0.2] cursor-pointer"
             >
-              Agendar Demo
+              Quero testar
             </button>
           </div>
 
@@ -106,9 +97,7 @@ export default function Navbar() {
                   href={link.href}
                   className={link.highlight ? "text-base py-1 font-medium cursor-pointer" : "nav-link-hero text-base py-1"}
                   style={link.highlight ? { color: "hsl(var(--green-bright))" } : undefined}
-                  onClick={(e) => {
-                    if (link.modal) { e.preventDefault(); openONGModal(true); }
-                    if ((link as any).investorModal) { e.preventDefault(); openInvestorModal(true); }
+                  onClick={() => {
                     setMobileOpen(false);
                   }}
                 >
@@ -121,7 +110,7 @@ export default function Navbar() {
                   onClick={() => { openDemoModal(true); setMobileOpen(false); }}
                   className="w-full py-3 rounded-full text-xs font-black tracking-[0.2em] uppercase bg-[hsl(var(--zera-emerald))] text-white shadow-lg shadow-[hsl(var(--zera-emerald))/0.2] cursor-pointer"
                 >
-                  Agendar Demo
+                  Quero testar
                 </button>
               </div>
             </div>

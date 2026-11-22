@@ -4,20 +4,20 @@ import { TrendingDown, Clock, AlertTriangle, ArrowRight } from "lucide-react";
 const stats = [
   {
     icon: TrendingDown,
-    value: "R$ 61 bi",
-    label: "Desperdício alimentar anual no Brasil",
+    value: "R$ 42,1 bi",
+    label: "Perdidos pelo varejo brasileiro em 2025 (Abrappe)",
     color: "#00E699"
   },
   {
     icon: Clock,
-    value: "160h/mês",
-    label: "Gastas em processos manuais de estoque",
+    value: "5,64%",
+    label: "Do faturamento de hortifrúti vira perda na loja de vizinhança (ABRAS, 2025)",
     color: "#00E699"
   },
   {
     icon: AlertTriangle,
-    value: "1/3",
-    label: "De toda a produção expira antes do consumo",
+    value: "R$ 104 mil",
+    label: "Pagos a mais em impostos por empresa, em média, de 2018 a 2023 (e-Auditoria)",
     color: "#00E699"
   },
 ];
@@ -42,31 +42,31 @@ export default function Problem() {
             <div className="flex items-center gap-3 mb-6">
               <div className="w-8 h-[1px] bg-[hsl(var(--zera-emerald))]" />
               <span className="text-[10px] font-mono font-bold tracking-[0.4em] uppercase text-[hsl(var(--zera-emerald))]">
-                Cenário Crítico (Logística 4.0)
+                O problema
               </span>
             </div>
 
             <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tighter leading-[1.1] mb-8">
-              O Desperdício é uma <br />
-              <span className="text-white/40">Incompetência de Dados.</span>
+              O dinheiro da loja não some de uma vez. <br />
+              <span className="text-white/40">Ele vaza todo dia.</span>
             </h2>
 
             <p className="text-lg text-white/50 leading-relaxed font-sans max-w-xl mb-10">
-              A gestão de perecíveis no varejo ainda opera no "feeling". Processos manuais e falta de visibilidade geram prejuízos silenciosos que corroem as margens e o potencial social das empresas.
+              O caixa fecha e o sistema registra tudo, mas ninguém tem tempo de olhar. Enquanto isso, a fruta passa do ponto, a taxa do cartão vem diferente do combinado e o custo do produto fica velho no cadastro.
             </p>
 
             <div className="flex flex-col gap-6">
               <div className="flex items-center gap-4 group cursor-pointer">
                 <div className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--zera-emerald))]" />
-                <span className="text-sm font-sans text-white/80 group-hover:text-white transition-colors">Fragmentação de informações entre ERP e Loja</span>
+                <span className="text-sm font-sans text-white/80 group-hover:text-white transition-colors">Os números estão no PDV, mas ninguém olha todo dia</span>
               </div>
               <div className="flex items-center gap-4 group cursor-pointer">
                 <div className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--zera-emerald))]" />
-                <span className="text-sm font-sans text-white/80 group-hover:text-white transition-colors">Incapacidade de prever picos de quebra</span>
+                <span className="text-sm font-sans text-white/80 group-hover:text-white transition-colors">Quebra, taxa errada e imposto a mais não aparecem no extrato</span>
               </div>
               <div className="flex items-center gap-4 group cursor-pointer">
                 <div className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--zera-emerald))]" />
-                <span className="text-sm font-sans text-white/80 group-hover:text-white transition-colors">Desconexão com o ecossistema de doação (ESG)</span>
+                <span className="text-sm font-sans text-white/80 group-hover:text-white transition-colors">O dono só descobre o problema no fim do mês</span>
               </div>
             </div>
           </motion.div>
