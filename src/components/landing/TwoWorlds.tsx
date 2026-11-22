@@ -4,13 +4,13 @@ import soilBg from "../../assets/genesis_soil_texture_bg.png";
 
 const stats = [
   {
-    value: "+33%",
-    label: "da produção global de alimentos é desperdiçada anualmente.",
+    value: "3",
+    label: "comparativos diários",
     icon: TrendingDown,
   },
   {
-    value: "R$ 4B",
-    label: "é o prejuízo anual do varejo alimentar brasileiro.",
+    value: "6h",
+    label: "no WhatsApp",
     icon: Target,
   },
 ];
@@ -18,24 +18,24 @@ const stats = [
 const cards = [
   {
     icon: Droplets,
-    title: "Recursos Hídricos",
-    value: "154m³ /ton",
+    title: "Vendas de sábado",
+    value: "R$ 18.420",
     progress: 75,
-    subtitle: "de água recuperada em processos",
+    subtitle: "+11% contra o mesmo sábado de 2025",
   },
   {
     icon: Leaf,
-    title: "Biodiversidade",
-    value: "12kg /ha",
+    title: "Margem bruta",
+    value: "27,4%",
     progress: 45,
-    subtitle: "de microorganismos em solos recuperados",
+    subtitle: "Hortifrúti puxou a margem para baixo",
   },
   {
     icon: Cloud,
-    title: "Estoque de Carbono",
-    value: "210t /ha",
+    title: "Caixa",
+    value: "2 alertas",
     progress: 90,
-    subtitle: "de CO2 equivalente neutralizado",
+    subtitle: "Cancelamentos acima do padrão no caixa 3",
   },
 ];
 
@@ -80,17 +80,17 @@ export default function TwoWorlds() {
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[hsl(var(--zera-emerald))]/10 border border-[hsl(var(--zera-emerald))]/20 mb-8 font-mono">
                 <Zap size={12} className="text-[hsl(var(--zera-emerald))]" />
                 <span className="text-[10px] font-bold uppercase tracking-widest text-[hsl(var(--zera-emerald))]">
-                  Simbiose Digital
+                  Fechamento por dentro
                 </span>
               </div>
 
               <h2 className="text-5xl md:text-6xl font-bold text-white tracking-tighter mb-8 leading-[0.95]">
-                Negócio em risco.<br />
-                <span className="text-white/40 italic font-sans">É hora de agir.</span>
+                Como foi ontem,<br />
+                <span className="text-white/40 italic font-sans">em 30 segundos.</span>
               </h2>
 
               <p className="text-xl text-white/60 max-w-lg leading-relaxed font-sans mb-12">
-                Estabelecemos como meta reverter a tendência global promovendo a inteligência circular na cadeia de alimentos.
+                Um exemplo do resumo que chega às 6h. Dados fictícios do Mercado Exemplo.
               </p>
             </div>
 
@@ -150,7 +150,7 @@ export default function TwoWorlds() {
                       </div>
                     </div>
                     <div className="text-[10px] font-mono text-white/20 uppercase tracking-widest">
-                      Protocol v4.2
+                      Exemplo
                     </div>
                   </div>
 
@@ -175,7 +175,7 @@ export default function TwoWorlds() {
             {/* Side Label Decor */}
             <div className="absolute -right-12 top-1/2 -rotate-90 translate-y-[-50%] pointer-events-none hidden xl:block">
               <span className="text-[10px] font-mono text-white/5 uppercase tracking-[1em] whitespace-nowrap">
-                SIMBIOSE . DIGITAL . ECOSYSTEM
+                VENDAS . MARGEM . CAIXA
               </span>
             </div>
           </div>
