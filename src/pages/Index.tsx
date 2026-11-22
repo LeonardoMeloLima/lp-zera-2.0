@@ -3,7 +3,7 @@ import GenesisHero from "@/components/landing/GenesisHero";
 import SocialProof from "@/components/landing/SocialProof";
 import Problem from "@/components/landing/Problem";
 import ESGPillars from "@/components/landing/ESGPillars";
-import Features from "@/components/landing/Features";
+import CamadasOrbita from "@/components/landing/CamadasOrbita";
 import TwoWorlds from "@/components/landing/TwoWorlds";
 import LeadCapture from "@/components/landing/LeadCapture";
 import FAQ from "@/components/landing/FAQ";
@@ -22,7 +22,7 @@ function IndexContent() {
         <SocialProof />
         <Problem />
         <ESGPillars />
-        <Features />
+        <CamadasOrbita />
         <TwoWorlds />
         <FAQ />
         <LeadCapture />
