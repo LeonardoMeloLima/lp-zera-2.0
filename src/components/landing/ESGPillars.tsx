@@ -5,27 +5,27 @@ import { Globe, Heart, ShieldCheck, Zap, BarChart3, Fingerprint } from "lucide-r
 const pillars = [
   {
     icon: Globe,
-    title: "Ambiental",
-    label: "Inventory Scope 1-3",
-    highlight: "(E)",
+    title: "Conecta",
+    label: "Só leitura",
+    highlight: "01",
     color: "#00E699",
-    text: "Redução real da pegada de carbono. Transformamos o alimento que seria descartado em ativos ambientais certificados, valorizando a sustentabilidade da sua marca.",
+    text: "O conector é instalado no computador da loja e lê vendas, custos e eventos de caixa. Nada é alterado no seu sistema.",
   },
   {
     icon: Heart,
-    title: "Social",
-    label: "Impact Verification",
-    highlight: "(S)",
+    title: "Organiza",
+    label: "Toda noite",
+    highlight: "02",
     color: "#10B981",
-    text: "Combate à fome com segurança. Conectamos o seu excedente de estoque a instituições sérias, gerando impacto positivo na sua comunidade sem riscos jurídicos.",
+    text: "Depois que a loja fecha, o Zera organiza o dia: vendas, margem por produto, cancelamentos, descontos e sangrias por operador.",
   },
   {
     icon: ShieldCheck,
-    title: "Governança",
-    label: "Audit Trail Protocol",
-    highlight: "(G)",
+    title: "Avisa",
+    label: "Às 6h",
+    highlight: "03",
     color: "#34D399",
-    text: "Controle absoluto e compliance. Garantimos a rastreabilidade total da sua operação, protegendo suas margens e auditando cada decisão de ponta a ponta.",
+    text: "Você acorda com o resumo no WhatsApp e só o que precisa da sua atenção. Quer o detalhe? Abre o painel.",
   },
 ];
 
@@ -53,15 +53,15 @@ export default function ESGPillars() {
           <div className="flex items-center justify-center gap-3 mb-6">
             <div className="w-8 h-[1px] bg-white/10" />
             <span className="text-[10px] font-mono font-bold tracking-[0.4em] uppercase text-[hsl(var(--zera-emerald))]">
-              Audit & Compliance (V 3.4)
+              Como funciona
             </span>
             <div className="w-8 h-[1px] bg-white/10" />
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tighter">
-            Três Pilares. <span className="text-[hsl(var(--zera-emerald))]">Uma Plataforma.</span>
+            Três passos. <span className="text-[hsl(var(--zera-emerald))]">Nenhuma troca de sistema.</span>
           </h2>
           <p className="mt-4 text-white/40 font-sans max-w-2xl mx-auto">
-            A Zera não é apenas software; é um protocolo de ecossistema para transformar resíduos operacionais em valor estratégico de longo prazo.
+            O Zera se conecta ao PDV que a loja já usa, só para ler. A rotina do caixa não muda.
           </p>
         </motion.div>
 
@@ -108,7 +108,7 @@ export default function ESGPillars() {
                   <div className="w-1 h-1 rounded-full bg-white/10" />
                 </div>
                 <span className="text-[9px] font-mono text-white/30 uppercase tracking-widest group-hover:text-white/60 transition-colors">
-                  Protocol Active
+                  Incluso no Fechamento
                 </span>
               </div>
 
