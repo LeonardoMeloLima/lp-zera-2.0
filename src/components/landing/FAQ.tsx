@@ -21,7 +21,7 @@ const faqData = [
             },
             {
                 q: "Serve para padaria, açougue e hortifrúti?",
-                a: "Sim. O Zera foi feito para o pequeno comércio: mercadinho, padaria, açougue, hortifrúti e lojas parecidas."
+                a: "Sim. O Zera foi feito para quem vende no caixa, do mercadinho ao supermercado, passando por padaria, açougue e hortifrúti."
             }
         ]
     },

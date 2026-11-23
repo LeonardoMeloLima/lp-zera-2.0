@@ -63,7 +63,7 @@ export default function Footer() {
         {/* Legal & Status */}
         <div className="flex flex-col md:flex-row items-center justify-between pt-12 gap-8 relative z-10">
           <div className="flex gap-8">
-            <a href="#" className="text-[10px] font-mono font-bold tracking-widest text-white/60 uppercase hover:text-white transition-colors">Política de Privacidade</a>
+            <a href="/privacidade" className="text-[10px] font-mono font-bold tracking-widest text-white/60 uppercase hover:text-white transition-colors">Política de Privacidade</a>
             <a href="#" className="text-[10px] font-mono font-bold tracking-widest text-white/60 uppercase hover:text-white transition-colors">Termos de Uso</a>
           </div>
 
