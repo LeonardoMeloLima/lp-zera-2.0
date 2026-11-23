@@ -42,7 +42,7 @@ export default function GenesisHero() {
                     <motion.div {...fadeUp(0.1)} className="flex items-center gap-3">
                         <div className="w-12 h-[1px] bg-white/20" />
                         <span className="mono-label text-[10px] tracking-[0.4em] text-[hsl(var(--zera-emerald))] font-bold uppercase">
-                            Gestão para o pequeno comércio
+                            Para mercados e supermercados
                         </span>
                     </motion.div>
 
@@ -58,7 +58,7 @@ export default function GenesisHero() {
                         {...fadeUp(0.3)}
                         className="max-w-xl text-lg text-white/60 leading-relaxed font-sans"
                     >
-                        Toda manhã, no seu WhatsApp, o resumo de ontem: vendas, margem e caixa, comparados com o mesmo dia da semana passada, do mês passado e do ano passado. Funciona com o sistema de caixa que você já usa.
+                        Acorde sabendo como foi o dia de ontem: vendas, lucro e alertas do caixa, comparados com a semana e o ano passado. Direto no WhatsApp, com o sistema que você já tem.
                     </motion.p>
 
                     <motion.div {...fadeUp(0.4)} className="flex items-center gap-6 mt-4">
@@ -77,8 +77,8 @@ export default function GenesisHero() {
 
                     <motion.div {...fadeUp(0.5)} className="flex items-center gap-8 mt-6">
                         <div className="flex flex-col gap-1">
-                            <span className="text-2xl font-bold text-white leading-none">R$ 1 a cada R$ 61</span>
-                            <span className="text-[10px] text-white/30 uppercase tracking-widest font-mono">Perdido em vendas pelo varejo em 2025 (Abrappe)</span>
+                            <span className="text-2xl font-bold text-white leading-none">2,39%</span>
+                            <span className="text-[10px] text-white/30 uppercase tracking-widest font-mono">Do faturamento do supermercado vira perda (Abrappe, 2024)</span>
                         </div>
                     </motion.div>
                 </div>
