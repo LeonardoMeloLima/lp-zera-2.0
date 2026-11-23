@@ -42,7 +42,7 @@ export default function GenesisHero() {
                     <motion.div {...fadeUp(0.1)} className="flex items-center gap-3">
                         <div className="w-12 h-[1px] bg-white/20" />
                         <span className="mono-label text-[10px] tracking-[0.4em] text-[hsl(var(--zera-emerald))] font-bold uppercase">
-                            Para mercados e supermercados
+                            Do hortifrúti ao supermercado
                         </span>
                     </motion.div>
 
